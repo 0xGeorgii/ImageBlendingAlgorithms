@@ -1,8 +1,9 @@
-﻿using System;
+﻿using IBALib.Interfaces;
+using IBALib.Types;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IBALib
+namespace IBALib.Algorithms
 {
     internal class MostDark : IBlendAlgorithm
     {
