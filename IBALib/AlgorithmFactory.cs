@@ -1,7 +1,8 @@
-﻿using System;
+﻿using IBALib.Algorithms;
+using IBALib.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace IBALib
 {
@@ -56,7 +57,7 @@ namespace IBALib
 
         public IBlendAlgorithm GetRandomAlgorithm()
         {
-            return Algorithms[new Random(DateTime.Now.Millisecond).Next(0, Algorithms.Count - 1)];
+            return Algorithms[new Random(DateTime.UtcNow.Millisecond).Next(0, Algorithms.Count - 1)];
         }
 
         public IBlendAlgorithm GetAlgorithmByName(string name)

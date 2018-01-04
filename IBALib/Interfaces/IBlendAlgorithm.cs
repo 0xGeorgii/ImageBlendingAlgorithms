@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using IBALib.Types;
+using System.Collections.Generic;
 
-namespace IBALib
+namespace IBALib.Interfaces
 {
     public interface IBlendAlgorithm
     {
