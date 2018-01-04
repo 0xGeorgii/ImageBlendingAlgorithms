@@ -2,6 +2,10 @@
 
 Library of algorithms to generate and blend images and photo to mind-blowing arts. See an examples [here](https://www.instagram.com/daizychainer/) Also see some examples below. Author is streaming on [Twitch](https://www.twitch.tv/georgeplotnikov) the development process of this app. Feel free to join and ask questions.
 
+Big thanks to AppVeyor for building our open source project:
+
+Build Status:  [![Build status](https://ci.appveyor.com/api/projects/status/3wrl63fly957bc80?svg=true)](https://ci.appveyor.com/project/GeorgePlotnikov/imageblendingalgorithms)
+
 ## Authors
 
 * **George Plotnikov** - *Initial work* - [blog](https://georgeplotnikov.github.io)
