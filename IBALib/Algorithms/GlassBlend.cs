@@ -25,7 +25,7 @@ namespace IBALib.Algorithms
             float 
                 sumR = colors.Sum(c=>c.R),
                 sumG = colors.Sum(c=>c.G),
-                sumB = colors.Sum(c=>c.R);
+                sumB = colors.Sum(c=>c.B);
             return new Color(sumR * divider, sumG * divider, sumB * divider, Alpha);
         }
 
