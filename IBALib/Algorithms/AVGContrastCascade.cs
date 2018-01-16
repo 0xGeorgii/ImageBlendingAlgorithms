@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace IBALib.Algorithms
 {
+    [ImageBlendingAlgorithm]
     internal class AVGContrastCascade : IBlendAlgorithm
     {
         public string GetName()

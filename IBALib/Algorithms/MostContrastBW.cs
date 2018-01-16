@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace IBALib.Algorithms
 {
+    [ImageBlendingAlgorithm]
     internal class MostContrastBW : IBlendAlgorithm
     {
         public string GetName()

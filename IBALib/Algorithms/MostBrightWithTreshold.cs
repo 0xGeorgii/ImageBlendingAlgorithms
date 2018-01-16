@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace IBALib.Algorithms
 {
+    [ImageBlendingAlgorithm]
     internal class MostBrightWithTreshold : IBlendAlgorithm
     {
         public float Threshold = 0.5f;

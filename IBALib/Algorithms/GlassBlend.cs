@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace IBALib.Algorithms
 {
+    [ImageBlendingAlgorithm]
     internal class GlassBlend : IBlendAlgorithm
     {
         public float Alpha;
