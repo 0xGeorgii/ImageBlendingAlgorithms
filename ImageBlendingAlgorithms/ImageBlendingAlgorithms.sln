@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBALib", "..\IBALib\IBALib.csproj", "{A5CA1FDB-44D8-46EF-92AC-DDEE2BACA0DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBALib", "IBALib\IBALib.csproj", "{A5CA1FDB-44D8-46EF-92AC-DDEE2BACA0DF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopUI", "DesktopUI\DesktopUI.csproj", "{7A059D23-B4C2-4587-BBF3-30C78E0C94AD}"
 EndProject
