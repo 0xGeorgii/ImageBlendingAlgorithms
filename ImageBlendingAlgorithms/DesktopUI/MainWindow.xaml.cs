@@ -6,11 +6,11 @@ using IBALib.Types;
 using SixLabors.ImageSharp;
 using SourceProvider.Network;
 using System;
-using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DesktopUI
@@ -25,6 +25,7 @@ namespace DesktopUI
         private TextBox _imagesCountTB;
         private CheckBox _roundTripCb;
         private List<CheckBox> _algorithmsCheckboxes;
+        private static ConcurrentDictionary<string, IBlendAlgorithm> _algorithms = new ConcurrentDictionary<string, IBlendAlgorithm>();
 
         public MainWindow()
         {
@@ -63,9 +64,9 @@ namespace DesktopUI
                         {
                             Content = type.Name,
                             Height = 25,
-                            Name = type.Name,
-                            Tag = Activator.CreateInstance(type)
-                        };                        
+                            Name = type.Name
+                        };
+                        _algorithms.TryAdd(type.Name, Activator.CreateInstance(type) as IBlendAlgorithm);
                         _algorithmsCheckboxes.Add(cb);
                         _grid.Children.Add(cb);
                         if (row > 3)
@@ -77,7 +78,6 @@ namespace DesktopUI
             }
         }
 
-        //TODO: extract src downloding into separate method and make handling detached from the UI thread
         private async void StartButtonHandle()
         {
             var heigth = _heightTB.Text;
@@ -101,31 +101,9 @@ namespace DesktopUI
                     }
                     else
                     {
-                        _algorithmsCheckboxes.ForEach(cb =>
-                        {
-                            if (cb.IsChecked)
-                            {
-                                var h = tasks[0].Result.Height;
-                                var w = tasks[0].Result.Width;
-                                using (var res = new SixLabors.ImageSharp.Image<Rgba32>(w, h))
-                                using (var fs = File.Create($"./{new Guid().ToString()}.jpg"))
-                                {
-                                    for (int i = 0; i < h; i++)
-                                    {
-                                        for (int j = 0; j < w; j++)
-                                        {
-                                            var pixels = tasks.Select(t =>
-                                            {
-                                                var pixel = t.Result[w, h];
-                                                return new Color(pixel.R, pixel.G, pixel.B);
-                                            });
-                                            res[w, h] = new Rgba32(((cb.Tag as IBlendAlgorithm).Calculate(pixels).Vector3));
-                                        }
-                                    }
-                                    res.SaveAsJpeg(fs);
-                                }
-                            }
-                        });
+                        var ts = TaskScheduler.FromCurrentSynchronizationContext();
+                        await Task.Factory.StartNew(() => GenerateImage(tasks))
+                            .ContinueWith((t)=> { if (_isStarted) StartButtonHandle(); }, ts);
                     }
                 }
                 catch
@@ -136,8 +114,37 @@ namespace DesktopUI
                     });
                     throw;
                 }
-                StartButtonHandle();
             }
+        }
+
+        private void GenerateImage(Task<Image<Rgba32>>[] tasks)
+        {
+            _algorithmsCheckboxes.ForEach(cb =>
+            {
+                if (cb.IsChecked)
+                {
+                    var h = tasks[0].Result.Height;
+                    var w = tasks[0].Result.Width;
+                    var alg = _algorithms[cb.Name];
+                    using (var res = new SixLabors.ImageSharp.Image<Rgba32>(w, h))
+                    using (var fs = File.Create($"./{Guid.NewGuid().ToString()}.jpg"))
+                    {
+                        for (int i = 0; i < h; i++)
+                        {
+                            for (int j = 0; j < w; j++)
+                            {
+                                var pixels = tasks.Select(t =>
+                                {
+                                    var pixel = t.Result[j, i];
+                                    return new Color(pixel.R, pixel.G, pixel.B, pixel.A);
+                                });
+                                res[j, i] = new Rgba32((alg.Calculate(pixels).Vector3));
+                            }
+                        }
+                        res.SaveAsJpeg(fs);
+                    }
+                }
+            });
         }
     }
 }

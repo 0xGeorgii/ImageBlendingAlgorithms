@@ -15,8 +15,8 @@ namespace IBALib.Types
         
         public Vector3 Vector3 => new Vector3(R, G, B);
         public Vector4 Vector4 => new Vector4(Vector3, A);
-        private int FloatToInt(float f) => (int)Math.Floor(f >= 1.0f ? 255 : f * 256.0);
-        private float IntToFloat(int i) => i / 255.0f;
+        private int FloatToByte(float f) => (int)Math.Floor(f >= 1.0f ? byte.MaxValue : f * 256.0);
+        private float ByteToFloat(byte i) => i / 255.0f;
 
         public Color(float r, float g, float b) : this(r, g, b, 1.0f) { }
 
@@ -28,14 +28,14 @@ namespace IBALib.Types
             A = a;
         }
 
-        public Color(int r, int g, int b) : this(r, g, b, 255) { }
+        public Color(byte r, byte g, byte b) : this(r, g, b, 255) { }
 
-        public Color(int r, int g, int b, int a)
+        public Color(byte r, byte g, byte b, byte a)
         {
-            R = IntToFloat(r);
-            G = IntToFloat(g);
-            B = IntToFloat(b);
-            A = IntToFloat(a);
+            R = ByteToFloat(r);
+            G = ByteToFloat(g);
+            B = ByteToFloat(b);
+            A = ByteToFloat(a);
         }
     }
 }
