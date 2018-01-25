@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace IBALib.Algorithms
 {
+    [ImageBlendingAlgorithm]
     internal class MostDark : IBlendAlgorithm
     {
         public string GetName()
