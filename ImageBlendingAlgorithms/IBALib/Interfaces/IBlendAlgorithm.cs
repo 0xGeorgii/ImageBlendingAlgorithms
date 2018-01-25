@@ -1,4 +1,4 @@
-﻿using IBALib.Types;
+using IBALib.Types;
 using System;
 using System.Collections.Generic;
 

@@ -1,4 +1,4 @@
-﻿using IBALib.Interfaces;
+using IBALib.Interfaces;
 using IBALib.Types;
 using System.Collections.Generic;
 using System.Linq;
