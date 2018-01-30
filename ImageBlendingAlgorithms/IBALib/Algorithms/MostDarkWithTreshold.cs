@@ -7,16 +7,11 @@ using System.Linq;
 namespace IBALib.Algorithms
 {
     [ImageBlendingAlgorithm]
-    internal class MostDarkWithTreshold : IBlendAlgorithm
+    internal class MostDarkWithTreshold : AIBAlgorithm
     {
-        public float Threshold = 0.25f;
-
-        public string GetName()
-        {
-            return "MostDarkWithTreshold";
-        }
-
-        public Color Calculate(IEnumerable<Color> colors)
+        private float _threshold = 0.25f;
+        
+        public override Color Calculate(IEnumerable<Color> colors)
         {
             var a = colors.ElementAt(0);
             var b = colors.ElementAt(1);
@@ -24,7 +19,7 @@ namespace IBALib.Algorithms
 
             var r = 0.5f + (c.R - 0.5f) * 2f;
             if (r < 0) r = 0;
-            if (r > Threshold)
+            if (r > _threshold)
             {
                 r += 0.25f;
                 if (r > 1f) r = 1f;
@@ -33,7 +28,7 @@ namespace IBALib.Algorithms
 
             var g = 0.5f + (c.G - 0.5f) * 2f;
             if (g < 0) g = 0;
-            if (g > Threshold)
+            if (g > _threshold)
             {
                 g += 0.25f;
                 if (g > 1f) g = 1f;
@@ -42,7 +37,7 @@ namespace IBALib.Algorithms
 
             var _b = 0.5f + (c.B - 0.5f) * 2f;
             if (_b < 0) _b = 0;
-            if (!(_b > Threshold)) return new Color(r, g, _b, 1f);
+            if (!(_b > _threshold)) return new Color(r, g, _b, 1f);
             _b += 0.25f;
             if (_b > 1f) _b = 1f;
             if (_b < 0) _b = 0;
@@ -50,9 +45,6 @@ namespace IBALib.Algorithms
             return new Color(r, g, _b, 1f);
         }
 
-        public string GetVerboseName()
-        {
-            return "MostDark2";
-        }
+        public override string GetVerboseName() => "Most Dark with Treshold";
     }
 }

@@ -9,172 +9,170 @@ namespace IBALibTest
     [TestClass]
     public class AlgorithmsTests
     {
+        private static readonly AlgorithmFactory _factory = AlgorithmFactory.Instance;
 
-        private static AlgorithmFactory factory = AlgorithmFactory.Instance;
-
-        private Color colorGray = new Color(0.2f, 0.3f, 0.2f);
-        private Color colorRed = new Color(0.5f, 0.0f, 0.0f);
-        private Color colorPurple = new Color(0.5f, 0.0f, 0.1f);
-        private Color colorLightGray = new Color(0.5f, 0.5f, 0.5f);
-        private Color colorBlack = new Color(0.0f, 0.0f, 0.0f);
-        private Color colorYellow = new Color(0.7f, 0.7f, 0.0f);
+        private readonly Color _colorGray = new Color(0.2f, 0.3f, 0.2f);
+        private readonly Color _colorRed = new Color(0.5f, 0.0f, 0.0f);
+        private readonly Color _colorPurple = new Color(0.5f, 0.0f, 0.1f);
+        private readonly Color _colorLightGray = new Color(0.5f, 0.5f, 0.5f);
+        private readonly Color _colorBlack = new Color(0.0f, 0.0f, 0.0f);
+        private readonly Color _colorYellow = new Color(0.7f, 0.7f, 0.0f);
 
         private void CompareTwoColor(Color color1, Color color2)
         {
-            string str1 = string.Format("R: {0}, G: {1}, B:{2}", color1.R, color1.G, color1.B);
-            string str2 = string.Format("R: {0}, G: {1}, B:{2}", color2.R, color2.G, color2.B);
+            var str1 = $"R: {color1.R}, G: {color1.G}, B:{color1.B}";
+            var str2 = $"R: {color2.R}, G: {color2.G}, B:{color2.B}";
             Assert.AreEqual(str1, str2);
         }
 
         [TestMethod]
-        public void Glass()
+        public void Glass_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm glass = factory.GetAlgorithmByName("Glass");
+            IBlendAlgorithm glass = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.GLASS];
 
-            List<Color> input = new List<Color> { colorGray, colorRed };
+            List<Color> input = new List<Color> { _colorGray, _colorRed };
             CompareTwoColor(new Color(0.35f, 0.15f, 0.1f), glass.Calculate(input));
 
-            input = new List<Color> { colorPurple, colorRed };
+            input = new List<Color> { _colorPurple, _colorRed };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.05f), glass.Calculate(input));
 
-            input = new List<Color> { colorPurple, colorGray };
+            input = new List<Color> { _colorPurple, _colorGray };
             CompareTwoColor(new Color(0.35f, 0.15f, 0.15f), glass.Calculate(input));
 
             input.Clear();
-
         }
 
         [TestMethod]
-        public void AvgContrast()
+        public void AvgContrast_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm avgContrast = factory.GetAlgorithmByName("Contrast");
+            IBlendAlgorithm avgContrast = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.AVGContrast];
 
-            List<Color> input = new List<Color> { colorBlack, colorRed };
+            List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.0f, 0.0f, 0.0f), avgContrast.Calculate(input));
 
-            input = new List<Color> { colorYellow, colorRed, colorBlack, colorLightGray };
+            input = new List<Color> { _colorYellow, _colorRed, _colorBlack, _colorLightGray };
             CompareTwoColor(new Color(0.35f, 0.1f, 0.0f), avgContrast.Calculate(input));
 
-            input = new List<Color> { colorRed };
+            input = new List<Color> { _colorRed };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.0f), avgContrast.Calculate(input));
 
             input.Clear();
         }
 
         [TestMethod]
-        public void AvgContrastCascade()
+        public void AvgContrastCascade_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm avgContrastCascade = factory.GetAlgorithmByName("AVGContrastCascade");
+            IBlendAlgorithm avgContrastCascade = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.AVGContrastCascade];
 
-            List<Color> input = new List<Color> { colorBlack, colorRed };
+            List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.0f, 0.0f, 0.0f), avgContrastCascade.Calculate(input));
 
-            input = new List<Color> { colorYellow, colorRed, colorBlack, colorLightGray };
+            input = new List<Color> { _colorYellow, _colorRed, _colorBlack, _colorLightGray };
             CompareTwoColor(new Color(1.0f, 0.9f, 0.0f), avgContrastCascade.Calculate(input));
 
-            input = new List<Color> { colorRed, colorRed };
+            input = new List<Color> { _colorRed, _colorRed };
             CompareTwoColor(new Color(1.0f, 0.0f, 0.0f), avgContrastCascade.Calculate(input));
 
             input.Clear();
         }
 
         [TestMethod]
-        public void MostBright()
+        public void MostBright_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostBright = factory.GetAlgorithmByName("MostBright");
+            IBlendAlgorithm mostBright = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostBright];
 
-            List<Color> input = new List<Color> { colorBlack, colorRed };
+            List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.0f), mostBright.Calculate(input));
 
-            input = new List<Color> { colorYellow, colorLightGray };
+            input = new List<Color> { _colorYellow, _colorLightGray };
             CompareTwoColor(new Color(0.5f, 0.5f, 0.5f), mostBright.Calculate(input));
 
-            input = new List<Color> { colorRed, colorRed };
+            input = new List<Color> { _colorRed, _colorRed };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.0f), mostBright.Calculate(input));
 
             input.Clear();
         }
 
         [TestMethod]
-        public void MostBrightWithTreshold()
+        public void MostBrightWithTreshold_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostBrightWT = factory.GetAlgorithmByName("MostBrightWithTreshold");
+            IBlendAlgorithm mostBrightWT = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostBrightWT];
 
-            List<Color> input = new List<Color> { colorBlack, colorRed };
+            List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.0f), mostBrightWT.Calculate(input));
 
-            input = new List<Color> { colorYellow, colorLightGray };
+            input = new List<Color> { _colorYellow, _colorLightGray };
             CompareTwoColor(new Color(0.5f, 0.5f, 0.5f), mostBrightWT.Calculate(input));
 
-            input = new List<Color> { colorYellow, colorYellow };
+            input = new List<Color> { _colorYellow, _colorYellow };
             CompareTwoColor(new Color(0.65f, 0.65f, 0.0f), mostBrightWT.Calculate(input));
 
             input.Clear();
         }
 
         [TestMethod]
-        public void MostColorful()
+        public void MostColorful_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostColorful = factory.GetAlgorithmByName("Color");
+            IBlendAlgorithm mostColorful = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostColorful];
 
-            List<Color> input = new List<Color> { colorBlack, colorRed };
+            List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.0f), mostColorful.Calculate(input));
 
-            input = new List<Color> { colorYellow, colorLightGray };
+            input = new List<Color> { _colorYellow, _colorLightGray };
             CompareTwoColor(new Color(0.7f, 0.7f, 0.0f), mostColorful.Calculate(input));
 
-            input = new List<Color> { colorRed, colorPurple };
+            input = new List<Color> { _colorRed, _colorPurple };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.0f), mostColorful.Calculate(input));
 
             input.Clear();
         }
 
         [TestMethod]
-        public void MostContrastBW()
+        public void MostContrastBW_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostContrastBW = factory.GetAlgorithmByName("MostContrastBW");
+            IBlendAlgorithm mostContrastBW = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostContrastBW];
 
-            List<Color> input = new List<Color> { colorBlack, colorRed };
+            List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.0f, 0.0f, 0.0f), mostContrastBW.Calculate(input));
 
-            input = new List<Color> { colorYellow, colorLightGray };
+            input = new List<Color> { _colorYellow, _colorLightGray };
             CompareTwoColor(new Color(0.5f, 0.5f, 0.5f), mostContrastBW.Calculate(input));
 
-            input = new List<Color> { colorRed, colorPurple };
+            input = new List<Color> { _colorRed, _colorPurple };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.0f), mostContrastBW.Calculate(input));
 
             input.Clear();
         }
 
         [TestMethod]
-        public void MostDark()
+        public void MostDark_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostDark = factory.GetAlgorithmByName("MostDark");
+            IBlendAlgorithm mostDark = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostDark];
 
-            List<Color> input = new List<Color> { colorBlack, colorRed };
+            List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.0f, 0.0f, 0.0f), mostDark.Calculate(input));
 
-            input = new List<Color> { colorYellow, colorLightGray };
+            input = new List<Color> { _colorYellow, _colorLightGray };
             CompareTwoColor(new Color(0.7f, 0.7f, 0.0f), mostDark.Calculate(input));
 
-            input = new List<Color> { colorRed, colorPurple };
+            input = new List<Color> { _colorRed, _colorPurple };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.0f), mostDark.Calculate(input));
 
             input.Clear();
         }
 
         [TestMethod]
-        public void MostDarkWithTreshold()
+        public void MostDarkWithTreshold_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostDark = factory.GetAlgorithmByName("MostDarkWithTreshold");
+            IBlendAlgorithm mostDark = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostDarkWT];
 
-            List<Color> input = new List<Color> { colorBlack, colorRed };
+            List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.0f, 0.0f, 0.0f), mostDark.Calculate(input));
 
-            input = new List<Color> { colorYellow, colorLightGray };
+            input = new List<Color> { _colorYellow, _colorLightGray };
             CompareTwoColor(new Color(1.0f, 1.0f, 0.0f), mostDark.Calculate(input));
 
-            input = new List<Color> { colorRed, colorPurple };
+            input = new List<Color> { _colorRed, _colorPurple };
             CompareTwoColor(new Color(0.75f, 0.0f, 0.0f), mostDark.Calculate(input));
 
             input.Clear();

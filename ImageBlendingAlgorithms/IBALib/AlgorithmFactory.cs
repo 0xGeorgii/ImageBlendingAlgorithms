@@ -62,7 +62,7 @@ namespace IBALib
 
         public IBlendAlgorithm GetAlgorithmByName(string name)
         {
-            return Algorithms.FirstOrDefault(item => item.GetName().Equals(name));
+            return Algorithms.FirstOrDefault(item => item.GetName().Equals(name, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }
