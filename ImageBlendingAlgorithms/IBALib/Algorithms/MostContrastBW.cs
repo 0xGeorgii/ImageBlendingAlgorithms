@@ -8,11 +8,9 @@ using System.Linq;
 namespace IBALib.Algorithms
 {
     [ImageBlendingAlgorithm]
-    internal class MostContrastBW : IBlendAlgorithm
+    internal class MostContrastBW : AIBAlgorithm
     {
-        public string GetName() => "MostContrastBW";
-
-        public Color Calculate(IEnumerable<Color> colors)
+        public override Color Calculate(IEnumerable<Color> colors)
         {
             var a = colors.ElementAt(0);
             var b = colors.ElementAt(1);
@@ -23,6 +21,6 @@ namespace IBALib.Algorithms
 
         static double GetY(Color c) => 0.299 * c.R + 0.587 * c.G + 0.114 * c.B;
 
-        public string GetVerboseName() => "B/W";
+        public override string GetVerboseName() => "Most Contrast B/W";
     }
 }

@@ -6,14 +6,9 @@ using System.Linq;
 namespace IBALib.Algorithms
 {
     [ImageBlendingAlgorithm]
-    internal class AVGContrast : IBlendAlgorithm
+    internal class AVGContrast : AIBAlgorithm
     {
-        public string GetName()
-        {
-            return "Contrast";
-        }
-
-        public Color Calculate(IEnumerable<Color> colors)
+        public override Color Calculate(IEnumerable<Color> colors)
         {
             var r = 0.5f + (colors.Average(c => c.R) - 0.5f) * 2f;
             if (r < 0) r = 0;
@@ -27,9 +22,6 @@ namespace IBALib.Algorithms
             return new Color(r, g, _b, 1f);
         }
 
-        public string GetVerboseName()
-        {
-            return "Contrast";
-        }
+        public override string GetVerboseName() => "Average Contrast";
     }
 }

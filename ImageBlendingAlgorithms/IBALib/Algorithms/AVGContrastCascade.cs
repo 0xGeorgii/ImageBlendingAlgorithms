@@ -6,18 +6,13 @@ using System.Linq;
 namespace IBALib.Algorithms
 {
     [ImageBlendingAlgorithm]
-    internal class AVGContrastCascade : IBlendAlgorithm
+    internal class AVGContrastCascade : AIBAlgorithm
     {
-        public string GetName()
-        {
-            return "AVGContrastCascade";
-        }
-
-        public Color Calculate(IEnumerable<Color> colors)
+        public override Color Calculate(IEnumerable<Color> colors)
         {
             var a = colors.ElementAt(0);
             var b = colors.ElementAt(1);
-            var r = 0.5f + ((a.R + b.R / 2f) - 0.5f) * 2f;
+            var r = 0.5f + ((a.R + b.R / 2f) - 0.5f) * 2f;    //inner division is not a bug, but the feature ^_^
             if (r < 0) r = 0;
             else if (r > 1f) r = 1f;
             var g = 0.5f + ((a.G + b.G / 2f) - 0.5f) * 2f;
@@ -29,9 +24,6 @@ namespace IBALib.Algorithms
             return new Color(r, g, _b, 1f);
         }
 
-        public string GetVerboseName()
-        {
-            return "ContrastCascade";
-        }
+        public override string GetVerboseName() => "Average Contrast Cascade";
     }
 }
