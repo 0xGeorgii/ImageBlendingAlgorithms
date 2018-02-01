@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using IBALib;
 using IBALib.Interfaces;
 using IBALib.Types;
 using SixLabors.ImageSharp;
@@ -10,6 +11,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -126,25 +128,46 @@ namespace DesktopUI
                     var h = tasks[0].Result.Height;
                     var w = tasks[0].Result.Width;
                     var alg = _algorithms[cb.Name];
-                    using (var res = new SixLabors.ImageSharp.Image<Rgba32>(w, h))
+                    var images = tasks.Select(t => t.Result);
+
+                    using (var res = new Image<Rgba32>(w, h))
                     using (var fs = File.Create($"./{Guid.NewGuid().ToString()}.jpg"))
                     {
-                        for (int i = 0; i < h; i++)
+                        for (int i = 0; i < w; i++)
                         {
-                            for (int j = 0; j < w; j++)
+                            for (int j = 0; j < h; j++)
                             {
-                                var pixels = tasks.Select(t =>
+                                var pixels = images.Select(img =>
                                 {
-                                    var pixel = t.Result[j, i];
+                                    var pixel = img[i, j];
                                     return new Color(pixel.R, pixel.G, pixel.B, pixel.A);
                                 });
-                                res[j, i] = new Rgba32((alg.Calculate(pixels).Vector3));
+                                res[i, j] = new Rgba32(alg.Calculate(pixels).Vector4);
                             }
                         }
                         res.SaveAsJpeg(fs);
                     }
                 }
             });
+        }
+        
+        private void ScaleImage(Image<Rgba32> image, int x, int y)
+        {
+            if (image.Width == x || image.Height == y) return;
+            var salg = AlgorithmFactory.Instance.ScalingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.NearestNeighbor];
+            var img = salg.Scale(new ImageWrapper<Rgba32>(image), x, y);
+            using (var res = new Image<Rgba32>(x, y))
+            {
+                for (int i = 0; i < x; i++)
+                {
+                    for (int j = 0; j < y; j++)
+                    {
+                        res[i, j] = new Rgba32(img[i, j].Vector4);
+                    }
+                }
+                var fs1 = File.Create($"./{Guid.NewGuid().ToString()}.jpg");
+                res.SaveAsJpeg(fs1);
+            }
         }
     }
 }

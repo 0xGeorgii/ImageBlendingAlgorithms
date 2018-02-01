@@ -6,17 +6,38 @@ using System.Threading.Tasks;
 
 namespace IBALib.Types
 {
-    public class Color
+    [Serializable]
+    public struct Color
     {
-        public readonly float R;
-        public readonly float G;
-        public readonly float B;
-        public readonly float A;
+        [NonSerialized]
+        public float R;
+        [NonSerialized]
+        public float G;
+        [NonSerialized]
+        public float B;
+        [NonSerialized]
+        public float A;
         
+        public uint _rawData;
+                
         public Vector3 Vector3 => new Vector3(R, G, B);
         public Vector4 Vector4 => new Vector4(Vector3, A);
-        private int FloatToByte(float f) => (int)Math.Floor(f >= 1.0f ? byte.MaxValue : f * 256.0);
-        private float ByteToFloat(byte i) => i / 255.0f;
+        private static byte FloatToByte(float f) => (byte)Math.Floor(f >= 1.0f ? byte.MaxValue : f * 256.0);
+        private static float ByteToFloat(byte i) => i / 255.0f;
+        public void UpdateRawData()
+        {
+            _rawData = 0;
+            _rawData >>= 24;
+            _rawData |= FloatToByte(R);
+            _rawData <<= 24;
+            _rawData >>= 16;
+            _rawData |= FloatToByte(G);
+            _rawData <<= 16;
+            _rawData >>= 8;
+            _rawData |= FloatToByte(B);
+            _rawData <<= 8;
+            _rawData |= FloatToByte(A);
+        }
 
         public Color(float r, float g, float b) : this(r, g, b, 1.0f) { }
 
@@ -26,6 +47,7 @@ namespace IBALib.Types
             G = g;
             B = b;
             A = a;
+            _rawData = 0;
         }
 
         public Color(byte r, byte g, byte b) : this(r, g, b, 255) { }
@@ -36,6 +58,26 @@ namespace IBALib.Types
             G = ByteToFloat(g);
             B = ByteToFloat(b);
             A = ByteToFloat(a);
+            _rawData = 0;
+        }
+        
+        public void FillFrom(Color c)
+        {
+            R = c.R;
+            G = c.G;
+            B = c.B;
+            A = c.A;
+        }
+
+        public static Color FromObject(object obj)
+        {
+            return new Color
+            {
+                R = ByteToFloat((byte)obj.GetType().GetField("R").GetValue(obj)),
+                G = ByteToFloat((byte)obj.GetType().GetField("G").GetValue(obj)),
+                B = ByteToFloat((byte)obj.GetType().GetField("B").GetValue(obj)),
+                A = ByteToFloat((byte)obj.GetType().GetField("A").GetValue(obj))
+            };
         }
     }
 }

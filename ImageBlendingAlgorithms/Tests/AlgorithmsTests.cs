@@ -28,7 +28,7 @@ namespace IBALibTest
         [TestMethod]
         public void Glass_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm glass = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.GLASS];
+            IBlendAlgorithm glass = _factory.BlendingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.GLASS];
 
             List<Color> input = new List<Color> { _colorGray, _colorRed };
             CompareTwoColor(new Color(0.35f, 0.15f, 0.1f), glass.Calculate(input));
@@ -45,7 +45,7 @@ namespace IBALibTest
         [TestMethod]
         public void AvgContrast_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm avgContrast = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.AVGContrast];
+            IBlendAlgorithm avgContrast = _factory.BlendingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.AVGContrast];
 
             List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.0f, 0.0f, 0.0f), avgContrast.Calculate(input));
@@ -62,7 +62,7 @@ namespace IBALibTest
         [TestMethod]
         public void AvgContrastCascade_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm avgContrastCascade = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.AVGContrastCascade];
+            IBlendAlgorithm avgContrastCascade = _factory.BlendingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.AVGContrastCascade];
 
             List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.0f, 0.0f, 0.0f), avgContrastCascade.Calculate(input));
@@ -79,7 +79,7 @@ namespace IBALibTest
         [TestMethod]
         public void MostBright_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostBright = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostBright];
+            IBlendAlgorithm mostBright = _factory.BlendingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostBright];
 
             List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.0f), mostBright.Calculate(input));
@@ -96,7 +96,7 @@ namespace IBALibTest
         [TestMethod]
         public void MostBrightWithTreshold_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostBrightWT = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostBrightWT];
+            IBlendAlgorithm mostBrightWT = _factory.BlendingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostBrightWT];
 
             List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.0f), mostBrightWT.Calculate(input));
@@ -113,7 +113,7 @@ namespace IBALibTest
         [TestMethod]
         public void MostColorful_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostColorful = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostColorful];
+            IBlendAlgorithm mostColorful = _factory.BlendingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostColorful];
 
             List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.5f, 0.0f, 0.0f), mostColorful.Calculate(input));
@@ -130,7 +130,7 @@ namespace IBALibTest
         [TestMethod]
         public void MostContrastBW_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostContrastBW = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostContrastBW];
+            IBlendAlgorithm mostContrastBW = _factory.BlendingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostContrastBW];
 
             List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.0f, 0.0f, 0.0f), mostContrastBW.Calculate(input));
@@ -147,7 +147,7 @@ namespace IBALibTest
         [TestMethod]
         public void MostDark_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostDark = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostDark];
+            IBlendAlgorithm mostDark = _factory.BlendingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostDark];
 
             List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.0f, 0.0f, 0.0f), mostDark.Calculate(input));
@@ -164,7 +164,7 @@ namespace IBALibTest
         [TestMethod]
         public void MostDarkWithTreshold_PixelCalculatingWorksAsExpected()
         {
-            IBlendAlgorithm mostDark = _factory.AlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostDarkWT];
+            IBlendAlgorithm mostDark = _factory.BlendingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.MostDarkWT];
 
             List<Color> input = new List<Color> { _colorBlack, _colorRed };
             CompareTwoColor(new Color(0.0f, 0.0f, 0.0f), mostDark.Calculate(input));

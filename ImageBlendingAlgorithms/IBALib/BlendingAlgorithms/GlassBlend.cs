@@ -3,7 +3,7 @@ using IBALib.Types;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IBALib.Algorithms
+namespace IBALib.BlendingAlgorithms
 {
     [ImageBlendingAlgorithm]
     internal class GlassBlend : AIBAlgorithm
