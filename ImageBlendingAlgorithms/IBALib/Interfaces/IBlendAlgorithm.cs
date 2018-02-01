@@ -4,10 +4,8 @@ using System.Collections.Generic;
 
 namespace IBALib.Interfaces
 {
-    public interface IBlendAlgorithm
+    public interface IBlendAlgorithm : IAlgorithm
     {
         Color Calculate(IEnumerable<Color> colors);
-        string GetName();
-        string GetVerboseName();
     }
 }

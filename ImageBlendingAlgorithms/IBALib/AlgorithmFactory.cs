@@ -1,5 +1,6 @@
-﻿using IBALib.Algorithms;
+﻿using IBALib.BlendingAlgorithms;
 using IBALib.Interfaces;
+using IBALib.ScalingAlgorithms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace IBALib
     public class AlgorithmFactory
     {
         public static AlgorithmFactory Instance = new AlgorithmFactory();
+
         public enum ALGORITHM
         {
             GLASS,
@@ -19,10 +21,11 @@ namespace IBALib
             MostDark,
             MostDarkWT,
             MostColorful,
-            MostContrastBW
+            MostContrastBW,
+            NearestNeighbor
         };
 
-        public Dictionary<ALGORITHM, IBlendAlgorithm> AlgorithmsDictionary = new Dictionary<ALGORITHM, IBlendAlgorithm>()
+        public Dictionary<ALGORITHM, IBlendAlgorithm> BlendingAlgorithmsDictionary = new Dictionary<ALGORITHM, IBlendAlgorithm>()
         {
             { ALGORITHM.GLASS, new GlassBlend() },
             { ALGORITHM.AVGContrast, new AVGContrast() },
@@ -35,7 +38,12 @@ namespace IBALib
             { ALGORITHM.MostContrastBW, new MostContrastBW() }
         };
 
-        public List<IBlendAlgorithm> Algorithms = new List<IBlendAlgorithm>()
+        public Dictionary<ALGORITHM, IScaleAlgorithm> ScalingAlgorithmsDictionary = new Dictionary<ALGORITHM, IScaleAlgorithm>()
+        {
+            { ALGORITHM.NearestNeighbor, new NearestNeighbor() }
+        };
+
+        public List<IBlendAlgorithm> BlendingAlgorithms = new List<IBlendAlgorithm>()
         {
             new GlassBlend(),
             new AVGContrast(),
@@ -48,6 +56,12 @@ namespace IBALib
             new MostContrastBW()
         };
 
+        public List<IScaleAlgorithm> ScalingAlgorithms = new List<IScaleAlgorithm>()
+        {
+            new NearestNeighbor()
+        };
+
+
         static AlgorithmFactory()
         {
 
@@ -55,14 +69,14 @@ namespace IBALib
 
         private AlgorithmFactory() { }
 
-        public IBlendAlgorithm GetRandomAlgorithm()
+        public IBlendAlgorithm GetRandomBlendingAlgorithm()
         {
-            return Algorithms[new Random(DateTime.UtcNow.Millisecond).Next(0, Algorithms.Count - 1)];
+            return BlendingAlgorithms[new Random(DateTime.UtcNow.Millisecond).Next(0, BlendingAlgorithms.Count - 1)];
         }
 
-        public IBlendAlgorithm GetAlgorithmByName(string name)
+        public IBlendAlgorithm GetBlendingAlgorithmByName(string name)
         {
-            return Algorithms.FirstOrDefault(item => item.GetName().Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            return BlendingAlgorithms.FirstOrDefault(item => item.GetName().Equals(name, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }
