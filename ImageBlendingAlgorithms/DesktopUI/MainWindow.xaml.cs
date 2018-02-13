@@ -25,6 +25,7 @@ namespace DesktopUI
         private TextBox _heightTB;
         private TextBox _widthTB;
         private TextBox _imagesCountTB;
+        private TextBox _cyclesCountTB;
         private CheckBox _roundTripCb;
         private List<CheckBox> _algorithmsCheckboxes;
         private CancellationTokenSource _cancellationTokenSource;
@@ -43,6 +44,7 @@ namespace DesktopUI
             _widthTB = this.FindControl<TextBox>("widthTB");
             _heightTB = this.FindControl<TextBox>("heightTB");
             _imagesCountTB = this.FindControl<TextBox>("imagesCountTB");
+            _cyclesCountTB = this.FindControl<TextBox>("cyclesCountTB");
             _roundTripCb = this.FindControl<CheckBox>("rndTripCb");
             _roundTripCb.Click += (sender, args) =>
             {
@@ -87,18 +89,32 @@ namespace DesktopUI
             var heigth = _heightTB.Text;
             var width = _widthTB.Text;
             var imagesCount = int.Parse(_imagesCountTB.Text ?? "0");
+            var cyclesCount = int.Parse(_cyclesCountTB.Text ?? "0");
             _isStarted = !_isStarted;
             _button.Content = _isStarted ? "Stop" : "Start";
             _heightTB.IsEnabled = _widthTB.IsEnabled = _roundTripCb.IsEnabled = !_isStarted;
             if (_isStarted)
             {
-                var tasks = new Task<Image<Rgba32>>[imagesCount];
-                for (int i = 0; i < imagesCount; i++)
+                var processTasks = new Task[cyclesCount];
+                for (int i = 0; i < cyclesCount; i++)
                 {
-                    tasks[i] = SrcLoader.DownloadImageAsync(uint.Parse(width), uint.Parse(heigth));
+                    processTasks[i] = Process(heigth, width, imagesCount);
                 }
-                await Task.WhenAll(tasks);
-                try
+                await Task.WhenAll(processTasks);
+            }
+        }
+
+        private async Task Process(string heigth, string width, int imagesCount)
+        {
+            var tasks = new Task<Image<Rgba32>>[imagesCount];
+            for (int i = 0; i < imagesCount; i++)
+            {
+                tasks[i] = SrcLoader.DownloadImageAsync(uint.Parse(width), uint.Parse(heigth));
+            }
+            await Task.WhenAll(tasks);
+            try
+            {
+                if (_roundTripCb.IsChecked)
                 {
                     _cancellationTokenSource = new CancellationTokenSource();
                     _cancellationToken = _cancellationTokenSource.Token;

@@ -1,6 +1,6 @@
 # ImageBlendingAlgorithms
 
-Library of algorithms for generating and blending images and photos for inspiring artists produces mind-blowing arts. See an examples [here](https://www.instagram.com/daizychainer/) Also see some examples below. Author is streaming on [Twitch](https://www.twitch.tv/georgeplotnikov) the development process of this app. Feel free to join and ask questions.
+Multiplatform [Netcore](https://github.com/dotnet/coreclr) based library of algorithms for generating and blending images and photos for inspiring artists produces mind-blowing arts. See an examples [here](https://www.instagram.com/daizychainer/) Also see some examples below. Author is streaming on [Twitch](https://www.twitch.tv/georgeplotnikov) the development process of this app. Feel free to join and ask questions.
 
 Big thanks to AppVeyor for building our open source project:
 
