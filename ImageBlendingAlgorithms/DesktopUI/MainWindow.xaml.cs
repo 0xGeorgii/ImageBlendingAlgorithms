@@ -102,6 +102,11 @@ namespace DesktopUI
                 }
                 await Task.WhenAll(processTasks);
             }
+            else if (_cancellationTokenSource != null)
+            {
+                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource = null;
+            }
         }
 
         private async Task Process(string heigth, string width, int imagesCount)
@@ -114,41 +119,33 @@ namespace DesktopUI
             await Task.WhenAll(tasks);
             try
             {
-                if (_roundTripCb.IsChecked)
+                _cancellationTokenSource = new CancellationTokenSource();
+                _cancellationToken = _cancellationTokenSource.Token;
+                var ts = TaskScheduler.FromCurrentSynchronizationContext();
+                var checkedCb = _algorithmsCheckboxes.Where(c => _roundTripCb.IsChecked || c.IsChecked).ToList();
+                var tasksForGenerating = new Task[checkedCb.Count];
+                for (int i = 0; i < checkedCb.Count; i++)
                 {
-                    _cancellationTokenSource = new CancellationTokenSource();
-                    _cancellationToken = _cancellationTokenSource.Token;
-                    var ts = TaskScheduler.FromCurrentSynchronizationContext();
-                    var checkedCb = _algorithmsCheckboxes.Where(c => _roundTripCb.IsChecked || c.IsChecked).ToList();                    
-                    var tasksForGenerating = new Task[checkedCb.Count];
-                    for (int i = 0; i < checkedCb.Count; i++)
-                    {
-                        int n = i;
-                        tasksForGenerating[i] = new Task(() => GenerateImage(tasks, _algorithms[checkedCb.ElementAt(n).Name]));
-                        tasksForGenerating[i].Start();
-                    }
-                    await Task.WhenAll(tasksForGenerating);
-                    if (_isStarted) StartButtonHandle();
+                    int n = i;
+                    tasksForGenerating[i] = new Task(() => GenerateImage(tasks, _algorithms[checkedCb.ElementAt(n).Name]));
+                    tasksForGenerating[i].Start();
                 }
-                catch(Exception ex)
-                {
-                    tasks.ToList().ForEach(x =>
-                    {
-                        if (x.Status == TaskStatus.RanToCompletion) x.Result.Dispose();
-                    });
-                    if(ex is TaskCanceledException)
-                    {
-                        //TODO: log it and don't throw
-                    }
-                    else
-                        throw;
-                }
+                await Task.WhenAll(tasksForGenerating);
+                if (_isStarted) StartButtonHandle();
             }
-            else if(_cancellationTokenSource != null)
+            catch (Exception ex)
             {
-                _cancellationTokenSource.Cancel();
-                _cancellationTokenSource = null;
-            }
+                tasks.ToList().ForEach(x =>
+                {
+                    if (x.Status == TaskStatus.RanToCompletion) x.Result.Dispose();
+                });
+                if (ex is TaskCanceledException)
+                {
+                    //TODO: log it and don't throw
+                }
+                else
+                    throw;
+            }        
         }
 
         private void GenerateImage(Task<Image<Rgba32>>[] tasks, IBlendAlgorithm algorithm)
