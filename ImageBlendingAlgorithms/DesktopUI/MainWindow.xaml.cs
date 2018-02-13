@@ -27,6 +27,8 @@ namespace DesktopUI
         private TextBox _imagesCountTB;
         private CheckBox _roundTripCb;
         private List<CheckBox> _algorithmsCheckboxes;
+        private CancellationTokenSource _cancellationTokenSource;
+        private CancellationToken _cancellationToken;
         private static ConcurrentDictionary<string, IBlendAlgorithm> _algorithms = new ConcurrentDictionary<string, IBlendAlgorithm>();
 
         public MainWindow()
@@ -98,57 +100,64 @@ namespace DesktopUI
                 await Task.WhenAll(tasks);
                 try
                 {
-                    if (_roundTripCb.IsChecked)
+                    _cancellationTokenSource = new CancellationTokenSource();
+                    _cancellationToken = _cancellationTokenSource.Token;
+                    var ts = TaskScheduler.FromCurrentSynchronizationContext();
+                    var checkedCb = _algorithmsCheckboxes.Where(c => _roundTripCb.IsChecked || c.IsChecked).ToList();                    
+                    var tasksForGenerating = new Task[checkedCb.Count];
+                    for (int i = 0; i < checkedCb.Count; i++)
                     {
+                        int n = i;
+                        tasksForGenerating[i] = new Task(() => GenerateImage(tasks, _algorithms[checkedCb.ElementAt(n).Name]));
+                        tasksForGenerating[i].Start();
                     }
-                    else
-                    {
-                        var ts = TaskScheduler.FromCurrentSynchronizationContext();
-                        await Task.Factory.StartNew(() => GenerateImage(tasks))
-                            .ContinueWith((t)=> { if (_isStarted) StartButtonHandle(); }, ts);
-                    }
+                    await Task.WhenAll(tasksForGenerating);
+                    if (_isStarted) StartButtonHandle();
                 }
-                catch
+                catch(Exception ex)
                 {
                     tasks.ToList().ForEach(x =>
                     {
                         if (x.Status == TaskStatus.RanToCompletion) x.Result.Dispose();
                     });
-                    throw;
+                    if(ex is TaskCanceledException)
+                    {
+                        //TODO: log it and don't throw
+                    }
+                    else
+                        throw;
                 }
+            }
+            else if(_cancellationTokenSource != null)
+            {
+                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource = null;
             }
         }
 
-        private void GenerateImage(Task<Image<Rgba32>>[] tasks)
+        private void GenerateImage(Task<Image<Rgba32>>[] tasks, IBlendAlgorithm algorithm)
         {
-            _algorithmsCheckboxes.ForEach(cb =>
-            {
-                if (cb.IsChecked)
-                {
-                    var h = tasks[0].Result.Height;
-                    var w = tasks[0].Result.Width;
-                    var alg = _algorithms[cb.Name];
-                    var images = tasks.Select(t => t.Result);
+            var h = tasks[0].Result.Height;
+            var w = tasks[0].Result.Width;
+            var images = tasks.Select(t => t.Result);
 
-                    using (var res = new Image<Rgba32>(w, h))
-                    using (var fs = File.Create($"./{Guid.NewGuid().ToString()}.jpg"))
+            using (var res = new Image<Rgba32>(w, h))
+            using (var fs = File.Create($"./{Guid.NewGuid().ToString()}.jpg"))
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    for (int j = 0; j < h; j++)
                     {
-                        for (int i = 0; i < w; i++)
+                        var pixels = images.Select(img =>
                         {
-                            for (int j = 0; j < h; j++)
-                            {
-                                var pixels = images.Select(img =>
-                                {
-                                    var pixel = img[i, j];
-                                    return new Color(pixel.R, pixel.G, pixel.B, pixel.A);
-                                });
-                                res[i, j] = new Rgba32(alg.Calculate(pixels).Vector4);
-                            }
-                        }
-                        res.SaveAsJpeg(fs);
+                            var pixel = img[i, j];
+                            return new Color(pixel.R, pixel.G, pixel.B, pixel.A);
+                        });
+                        res[i, j] = new Rgba32(algorithm.Calculate(pixels).Vector4);
                     }
                 }
-            });
+                res.SaveAsJpeg(fs);
+            }
         }
         
         private void ScaleImage(Image<Rgba32> image, int x, int y)
