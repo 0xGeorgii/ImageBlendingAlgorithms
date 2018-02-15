@@ -19,7 +19,19 @@ namespace DesktopUI
 {
     public class MainWindow : Window
     {
-        private bool _isStarted = false;
+        private bool __isStared;
+        private bool _isStarted
+        {
+            get
+            {
+                return __isStared;
+            }
+            set
+            {
+                __isStared = value;
+                SwitchUIEnable();
+            }
+        }
         private Grid _grid;
         private Button _button;
         private TextBox _heightTB;
@@ -92,10 +104,11 @@ namespace DesktopUI
             var cyclesCount = int.Parse(_cyclesCountTB.Text ?? "0");
             _isStarted = !_isStarted;
             _button.Content = _isStarted ? "Stop" : "Start";
-            _heightTB.IsEnabled = _widthTB.IsEnabled = _roundTripCb.IsEnabled = !_isStarted;
             if (_isStarted)
             {
                 var processTasks = new Task[cyclesCount];
+                _cancellationTokenSource = new CancellationTokenSource();
+                _cancellationToken = _cancellationTokenSource.Token;
                 for (int i = 0; i < cyclesCount; i++)
                 {
                     processTasks[i] = Process(heigth, width, imagesCount);
@@ -106,28 +119,37 @@ namespace DesktopUI
             {
                 _cancellationTokenSource.Cancel();
                 _cancellationTokenSource = null;
+                GC.Collect();
             }
+        }
+
+        private void SwitchUIEnable()
+        {
+            _heightTB.IsEnabled = 
+                _widthTB.IsEnabled =
+                _roundTripCb.IsEnabled =
+                _cyclesCountTB.IsEnabled =
+                !_isStarted;
+            _algorithmsCheckboxes.ForEach(c => c.IsEnabled = !_isStarted);
         }
 
         private async Task Process(string heigth, string width, int imagesCount)
         {
             var tasks = new Task<Image<Rgba32>>[imagesCount];
-            for (int i = 0; i < imagesCount; i++)
-            {
-                tasks[i] = SrcLoader.DownloadImageAsync(uint.Parse(width), uint.Parse(heigth));
-            }
-            await Task.WhenAll(tasks);
             try
             {
-                _cancellationTokenSource = new CancellationTokenSource();
-                _cancellationToken = _cancellationTokenSource.Token;
+                for (int i = 0; i < imagesCount; i++)
+                {
+                    tasks[i] = SrcLoader.DownloadImageAsync(uint.Parse(width), uint.Parse(heigth), _cancellationToken);
+                }
+                await Task.WhenAll(tasks);
                 var ts = TaskScheduler.FromCurrentSynchronizationContext();
                 var checkedCb = _algorithmsCheckboxes.Where(c => _roundTripCb.IsChecked || c.IsChecked).ToList();
                 var tasksForGenerating = new Task[checkedCb.Count];
                 for (int i = 0; i < checkedCb.Count; i++)
                 {
                     int n = i;
-                    tasksForGenerating[i] = new Task(() => GenerateImage(tasks, _algorithms[checkedCb.ElementAt(n).Name]));
+                    tasksForGenerating[i] = new Task(() => GenerateImage(tasks, _algorithms[checkedCb.ElementAt(n).Name]), _cancellationToken);
                     tasksForGenerating[i].Start();
                 }
                 await Task.WhenAll(tasksForGenerating);
@@ -135,17 +157,21 @@ namespace DesktopUI
             }
             catch (Exception ex)
             {
-                tasks.ToList().ForEach(x =>
-                {
-                    if (x.Status == TaskStatus.RanToCompletion) x.Result.Dispose();
-                });
-                if (ex is TaskCanceledException)
+                if (ex is TaskCanceledException || ex is OperationCanceledException)
                 {
                     //TODO: log it and don't throw
                 }
                 else
                     throw;
-            }        
+            }
+            finally
+            {
+                tasks.ToList().ForEach(x =>
+                {
+                    if (x.Status == TaskStatus.RanToCompletion) x.Result.Dispose();
+                    x = null;
+                });
+            }
         }
 
         private void GenerateImage(Task<Image<Rgba32>>[] tasks, IBlendAlgorithm algorithm)

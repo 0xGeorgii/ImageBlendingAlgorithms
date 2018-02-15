@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SourceProvider.Network
@@ -13,16 +14,26 @@ namespace SourceProvider.Network
     {
         public static async Task<byte[]> DownloadSrcAsync(uint x, uint y)
         {
+            return await DownloadSrcAsync(x, y, CancellationToken.None);
+        }
+
+        public static async Task<byte[]> DownloadSrcAsync(uint x, uint y, CancellationToken cancellationToken)
+        {
             using (var client = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Get, UrlProvider.GetRandomUrl(x, y)))
             {
-                return await (await client.SendAsync(request)).Content.ReadAsByteArrayAsync();
+                return await (await client.SendAsync(request, cancellationToken)).Content.ReadAsByteArrayAsync();
             }
         }
 
         public static async Task<Image<Rgba32>> DownloadImageAsync(uint x, uint y)
         {
-            var data = await DownloadSrcAsync(x, y);
+            return await DownloadImageAsync(x, y, CancellationToken.None);
+        }
+
+        public static async Task<Image<Rgba32>> DownloadImageAsync(uint x, uint y, CancellationToken cancellationToken)
+        {
+            var data = await DownloadSrcAsync(x, y, cancellationToken);
             return Image.Load(data);
         }
 
