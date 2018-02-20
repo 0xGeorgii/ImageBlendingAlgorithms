@@ -63,7 +63,6 @@ namespace DesktopUI
             {
                 _algorithmsCheckboxes.ForEach(cb => cb.IsEnabled = !(sender as CheckBox).IsChecked.Value);
             };
-            var scroll = this.FindControl<ScrollViewer>("outputScroll");
             var outputTB = this.FindControl<TextBlock>("output");
             Log.RegisterCallback((message) =>
             {
