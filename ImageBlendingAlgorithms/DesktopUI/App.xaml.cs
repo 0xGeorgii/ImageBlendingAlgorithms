@@ -14,17 +14,19 @@ namespace DesktopUI
 
         public override void Initialize()
         {
-            AvaloniaXamlLoader.Load(this);
+            AvaloniaXamlLoaderPortableXaml.Load(this);
             base.Initialize();
         }
 
         static void Main(string[] args)
         {
             InitializeLogging();
-            AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .Start<MainWindow>();
+            BuildAvaloniaApp().Start<MainWindow>();
         }
+
+        static AppBuilder BuildAvaloniaApp() => AppBuilder
+                .Configure<App>()
+                .UsePlatformDetect();
 
         public static void AttachDevTools(Window window)
         {

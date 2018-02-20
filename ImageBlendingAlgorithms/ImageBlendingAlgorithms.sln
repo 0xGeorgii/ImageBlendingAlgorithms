@@ -1,13 +1,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBALib", "IBALib\IBALib.csproj", "{A5CA1FDB-44D8-46EF-92AC-DDEE2BACA0DF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesktopUI", "DesktopUI\DesktopUI.csproj", "{7A059D23-B4C2-4587-BBF3-30C78E0C94AD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SourceProvider", "SourceProvider\SourceProvider.csproj", "{CDE0187E-360F-4CB9-8956-6197F8FA3500}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBALibTest", "Tests\IBALibTest.csproj", "{802BE0C9-21B0-46D3-B8AE-AEE1367D512D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Processing", "Processing\Processing.csproj", "{D5B5F2A4-C49B-470A-856D-4CFA3B4F8B7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +34,10 @@ Global
 		{802BE0C9-21B0-46D3-B8AE-AEE1367D512D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{802BE0C9-21B0-46D3-B8AE-AEE1367D512D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{802BE0C9-21B0-46D3-B8AE-AEE1367D512D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5B5F2A4-C49B-470A-856D-4CFA3B4F8B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5B5F2A4-C49B-470A-856D-4CFA3B4F8B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5B5F2A4-C49B-470A-856D-4CFA3B4F8B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5B5F2A4-C49B-470A-856D-4CFA3B4F8B7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

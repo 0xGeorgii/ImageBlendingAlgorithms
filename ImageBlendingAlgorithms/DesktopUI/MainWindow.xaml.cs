@@ -1,9 +1,11 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using IBALib;
 using IBALib.Interfaces;
 using IBALib.Types;
+using Processing;
 using SixLabors.ImageSharp;
 using SourceProvider.Network;
 using System;
@@ -11,7 +13,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -60,13 +61,20 @@ namespace DesktopUI
             _roundTripCb = this.FindControl<CheckBox>("rndTripCb");
             _roundTripCb.Click += (sender, args) =>
             {
-                _algorithmsCheckboxes.ForEach(cb => cb.IsEnabled = !(sender as CheckBox).IsChecked);
+                _algorithmsCheckboxes.ForEach(cb => cb.IsEnabled = !(sender as CheckBox).IsChecked.Value);
             };
+            var scroll = this.FindControl<ScrollViewer>("outputScroll");
+            var outputTB = this.FindControl<TextBlock>("output");
+            Log.RegisterCallback((message) =>
+            {
+                Dispatcher.UIThread.InvokeAsync(() => outputTB.Text += message);
+            });
+            Log.Debug("=== Desktop UI has been initialized ===");
         }
 
         private void InitializeComponent()
         {
-            AvaloniaXamlLoader.Load(this);
+            AvaloniaXamlLoaderPortableXaml.Load(this);
         }
 
         private void BuildComponents()
@@ -144,7 +152,7 @@ namespace DesktopUI
                 }
                 await Task.WhenAll(tasks);
                 var ts = TaskScheduler.FromCurrentSynchronizationContext();
-                var checkedCb = _algorithmsCheckboxes.Where(c => _roundTripCb.IsChecked || c.IsChecked).ToList();
+                var checkedCb = _algorithmsCheckboxes.Where(c => _roundTripCb.IsChecked.Value || c.IsChecked.Value).ToList();
                 var tasksForGenerating = new Task[checkedCb.Count];
                 for (int i = 0; i < checkedCb.Count; i++)
                 {
