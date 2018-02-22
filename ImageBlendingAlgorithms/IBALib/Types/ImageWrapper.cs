@@ -44,5 +44,7 @@ namespace IBALib.Types
         public int Width => _getWidth();
 
         public int Height => _getHeight();
+
+        public object GetSource => _source;
     }
 }

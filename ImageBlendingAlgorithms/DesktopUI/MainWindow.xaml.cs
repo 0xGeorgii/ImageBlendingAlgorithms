@@ -6,6 +6,8 @@ using IBALib;
 using IBALib.Interfaces;
 using IBALib.Types;
 using Processing;
+using Processing.ImageProcessing;
+using Processing.ImageProcessing.Commands;
 using SixLabors.ImageSharp;
 using SourceProvider.Network;
 using System;
@@ -183,6 +185,17 @@ namespace DesktopUI
 
         private void GenerateImage(Task<Image<Rgba32>>[] tasks, IBlendAlgorithm algorithm)
         {
+            var proc = new ImageProcessor<Rgba32>();
+            proc.AddCommand(new ApplyAlgorithmCommand(algorithm, typeof(Image<>)));
+            proc.AddCommand(new ScaleImageCommand(AlgorithmFactory.Instance.ScalingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.NearestNeighbor], 400, 400, typeof(Image<>)));
+            proc.AddImage(tasks.Select(t => new ImageWrapper<Rgba32>(t.Result)));
+            proc.Process();
+            using (var fs = File.Create($"./{Guid.NewGuid().ToString()}.jpg"))
+            {
+                ((proc.Result as dynamic).GetSource as Image<Rgba32>).SaveAsJpeg(fs);
+            }
+            
+            /*
             var h = tasks[0].Result.Height;
             var w = tasks[0].Result.Width;
             var images = tasks.Select(t => t.Result);
@@ -204,6 +217,7 @@ namespace DesktopUI
                 }
                 res.SaveAsJpeg(fs);
             }
+            */
         }
         
         private void ScaleImage(Image<Rgba32> image, int x, int y)
