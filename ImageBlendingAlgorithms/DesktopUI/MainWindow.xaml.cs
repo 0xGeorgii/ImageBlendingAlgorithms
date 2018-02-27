@@ -6,6 +6,8 @@ using IBALib;
 using IBALib.Interfaces;
 using IBALib.Types;
 using Processing;
+using Processing.ImageProcessing;
+using Processing.ImageProcessing.Commands;
 using SixLabors.ImageSharp;
 using SourceProvider.Network;
 using System;
@@ -37,6 +39,8 @@ namespace DesktopUI
         private Button _button;
         private TextBox _heightTB;
         private TextBox _widthTB;
+        private TextBox _resHeightTB;
+        private TextBox _resWidthTB;
         private TextBox _imagesCountTB;
         private TextBox _cyclesCountTB;
         private CheckBox _roundTripCb;
@@ -56,6 +60,8 @@ namespace DesktopUI
             _button.Click += delegate { StartButtonHandle(); };
             _widthTB = this.FindControl<TextBox>("widthTB");
             _heightTB = this.FindControl<TextBox>("heightTB");
+            _resWidthTB = this.FindControl<TextBox>("resWidthTB");
+            _resHeightTB = this.FindControl<TextBox>("resHeightTB");
             _imagesCountTB = this.FindControl<TextBox>("imagesCountTB");
             _cyclesCountTB = this.FindControl<TextBox>("cyclesCountTB");
             _roundTripCb = this.FindControl<CheckBox>("rndTripCb");
@@ -66,7 +72,7 @@ namespace DesktopUI
             var outputTB = this.FindControl<TextBlock>("output");
             Log.RegisterCallback((message) =>
             {
-                Dispatcher.UIThread.InvokeAsync(() => outputTB.Text += message);
+                Dispatcher.UIThread.InvokeAsync(() => outputTB.Text += message + "\r\n");
             });
             Log.Debug("=== Desktop UI has been initialized ===");
         }
@@ -113,6 +119,7 @@ namespace DesktopUI
             _button.Content = _isStarted ? "Stop" : "Start";
             if (_isStarted)
             {
+                Log.Debug("Begin execution");
                 var processTasks = new Task[cyclesCount];
                 _cancellationTokenSource = new CancellationTokenSource();
                 _cancellationToken = _cancellationTokenSource.Token;
@@ -134,6 +141,8 @@ namespace DesktopUI
         {
             _heightTB.IsEnabled = 
                 _widthTB.IsEnabled =
+                _resWidthTB.IsEnabled =
+                _resHeightTB.IsEnabled =
                 _roundTripCb.IsEnabled =
                 _cyclesCountTB.IsEnabled =
                 !_isStarted;
@@ -145,21 +154,45 @@ namespace DesktopUI
             var tasks = new Task<Image<Rgba32>>[imagesCount];
             try
             {
+                var uHeigth = uint.Parse(heigth);
+                var uWidth = uint.Parse(width);
+                Log.Debug("Begin loading images");
                 for (int i = 0; i < imagesCount; i++)
                 {
-                    tasks[i] = SrcLoader.DownloadImageAsync(uint.Parse(width), uint.Parse(heigth), _cancellationToken);
+                    tasks[i] = SrcLoader.DownloadImageAsync(uWidth, uHeigth, _cancellationToken);
                 }
                 await Task.WhenAll(tasks);
+                Log.Debug("Finish loading images");
                 var ts = TaskScheduler.FromCurrentSynchronizationContext();
                 var checkedCb = _algorithmsCheckboxes.Where(c => _roundTripCb.IsChecked.Value || c.IsChecked.Value).ToList();
                 var tasksForGenerating = new Task[checkedCb.Count];
+                Log.Debug("Begin image generating");
                 for (int i = 0; i < checkedCb.Count; i++)
                 {
                     int n = i;
-                    tasksForGenerating[i] = new Task(() => GenerateImage(tasks, _algorithms[checkedCb.ElementAt(n).Name]), _cancellationToken);
+                    tasksForGenerating[i] = new Task(() =>
+                    {
+                        var proc = new ImageProcessor<Rgba32>();
+                        proc.AddCommand(new ApplyAlgorithmCommand(_algorithms[checkedCb.ElementAt(n).Name], typeof(Image<>)));
+
+                        var resHeight = uint.Parse(_resHeightTB.Text ?? "0");
+                        var resWidth = uint.Parse(_resWidthTB.Text ?? "0");
+
+                        if(resHeight != uHeigth || resWidth != uWidth)
+                            proc.AddCommand(new ScaleImageCommand(AlgorithmFactory.Instance.ScalingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.NearestNeighborDownscale], (int)resWidth, (int)resHeight, typeof(Image<>)));
+                        proc.AddImage(tasks.Select(t => new ImageWrapper<Rgba32>(t.Result)));
+                        Log.Debug("Begin processing image");
+                        proc.Process();
+                        Log.Debug("End processing image");
+                        using (var fs = File.Create($"./{Guid.NewGuid().ToString()}.jpg"))
+                        {
+                            ((proc.Result as dynamic).GetSource as Image<Rgba32>).SaveAsJpeg(fs);
+                        }
+                    }, _cancellationToken);
                     tasksForGenerating[i].Start();
                 }
                 await Task.WhenAll(tasksForGenerating);
+                Log.Debug("End image generating");
                 if (_isStarted) StartButtonHandle();
             }
             catch (Exception ex)
@@ -178,50 +211,6 @@ namespace DesktopUI
                     if (x.Status == TaskStatus.RanToCompletion) x.Result.Dispose();
                     x = null;
                 });
-            }
-        }
-
-        private void GenerateImage(Task<Image<Rgba32>>[] tasks, IBlendAlgorithm algorithm)
-        {
-            var h = tasks[0].Result.Height;
-            var w = tasks[0].Result.Width;
-            var images = tasks.Select(t => t.Result);
-
-            using (var res = new Image<Rgba32>(w, h))
-            using (var fs = File.Create($"./{Guid.NewGuid().ToString()}.jpg"))
-            {
-                for (int i = 0; i < w; i++)
-                {
-                    for (int j = 0; j < h; j++)
-                    {
-                        var pixels = images.Select(img =>
-                        {
-                            var pixel = img[i, j];
-                            return new Color(pixel.R, pixel.G, pixel.B, pixel.A);
-                        });
-                        res[i, j] = new Rgba32(algorithm.Calculate(pixels).Vector4);
-                    }
-                }
-                res.SaveAsJpeg(fs);
-            }
-        }
-        
-        private void ScaleImage(Image<Rgba32> image, int x, int y)
-        {
-            if (image.Width == x || image.Height == y) return;
-            var salg = AlgorithmFactory.Instance.ScalingAlgorithmsDictionary[AlgorithmFactory.ALGORITHM.NearestNeighbor];
-            var img = salg.Scale(new ImageWrapper<Rgba32>(image), x, y);
-            using (var res = new Image<Rgba32>(x, y))
-            {
-                for (int i = 0; i < x; i++)
-                {
-                    for (int j = 0; j < y; j++)
-                    {
-                        res[i, j] = new Rgba32(img[i, j].Vector4);
-                    }
-                }
-                var fs1 = File.Create($"./{Guid.NewGuid().ToString()}.jpg");
-                res.SaveAsJpeg(fs1);
             }
         }
     }

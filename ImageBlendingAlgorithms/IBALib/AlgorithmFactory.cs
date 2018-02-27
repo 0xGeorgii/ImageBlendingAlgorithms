@@ -22,7 +22,8 @@ namespace IBALib
             MostDarkWT,
             MostColorful,
             MostContrastBW,
-            NearestNeighbor
+            NearestNeighbor,
+            NearestNeighborDownscale
         };
 
         public Dictionary<ALGORITHM, IBlendAlgorithm> BlendingAlgorithmsDictionary = new Dictionary<ALGORITHM, IBlendAlgorithm>()
@@ -40,7 +41,8 @@ namespace IBALib
 
         public Dictionary<ALGORITHM, IScaleAlgorithm> ScalingAlgorithmsDictionary = new Dictionary<ALGORITHM, IScaleAlgorithm>()
         {
-            { ALGORITHM.NearestNeighbor, new NearestNeighbor() }
+            { ALGORITHM.NearestNeighbor, new NearestNeighbor() },
+            { ALGORITHM.NearestNeighborDownscale, new NearestNeighborDownscale() }
         };
 
         public List<IBlendAlgorithm> BlendingAlgorithms = new List<IBlendAlgorithm>()
@@ -58,7 +60,8 @@ namespace IBALib
 
         public List<IScaleAlgorithm> ScalingAlgorithms = new List<IScaleAlgorithm>()
         {
-            new NearestNeighbor()
+            new NearestNeighbor(),
+            new NearestNeighborDownscale()
         };
 
 
