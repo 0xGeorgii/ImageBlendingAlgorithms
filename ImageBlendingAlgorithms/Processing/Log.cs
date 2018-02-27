@@ -33,5 +33,14 @@ namespace Processing
                 callback(message);
             }
         }
+
+        public static void Debug(Exception ex)
+        {
+            _log.Debug(ex);
+            foreach (var callback in _callbacks)
+            {
+                callback(ex.Message);
+            }
+        }
     }    
 }

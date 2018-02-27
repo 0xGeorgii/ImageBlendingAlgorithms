@@ -76,7 +76,9 @@ namespace Processing.ImageProcessing
                     _state = STATE.IN_PROGRESS;
                     foreach (var command in _commands)
                     {
+                        Log.Debug($"Begin performing {command.GetType().Name}");
                         _images = new List<ImageWrapper<T>>(command.Perform(_images));
+                        Log.Debug($"End performing {command.GetType().Name}");
                     }
                     _state = STATE.COMPLETED;
                     _result = _images[0];

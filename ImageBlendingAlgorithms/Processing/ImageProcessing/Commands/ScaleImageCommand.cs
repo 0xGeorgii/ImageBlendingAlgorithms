@@ -4,6 +4,7 @@ using Processing.ImageProcessing.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Processing.ImageProcessing.Commands
 {
@@ -29,7 +30,7 @@ namespace Processing.ImageProcessing.Commands
             var ny = lst[0].Width;
             foreach (var image in images)
             {
-                if(image.Height != nx || image.Width != ny)
+                if(image.Height != _y || image.Width != _x)
                 {
                     isNeedScale = true;
                     break;
@@ -44,8 +45,8 @@ namespace Processing.ImageProcessing.Commands
                 try
                 {
                     res = Activator.CreateInstance(genericType, new object[] { _x, _y });
-                    var pixels = _algorithm.Scale(new ImageWrapper<T>(lst[i]), _x, _y);
-                    for (int k = 0; i < _x; k++)
+                    var pixels = _algorithm.Scale(lst[i], _x, _y);
+                    for (int k = 0; k < _x; k++)
                     {
                         for (int n = 0; n < _y; n++)
                         {
@@ -57,6 +58,7 @@ namespace Processing.ImageProcessing.Commands
                 catch(Exception ex)
                 {
                     if (res != null && res is IDisposable) (res as IDisposable).Dispose();
+                    Log.Debug(ex);
                 }
             }
             return lst;

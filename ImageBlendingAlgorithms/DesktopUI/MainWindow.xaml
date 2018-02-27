@@ -1,4 +1,4 @@
-﻿<Window xmlns="https://github.com/avaloniaui" Width="600" Height="500">
+﻿<Window xmlns="https://github.com/avaloniaui" Width="600" Height="510">
   <StackPanel>
     <TextBlock FontSize="30" Margin="10" TextAlignment="Center">Welcome to image blender</TextBlock>
     <Grid Margin="20" Name="grid">
@@ -15,18 +15,24 @@
         <RowDefinition></RowDefinition>
         <RowDefinition></RowDefinition>
         <RowDefinition></RowDefinition>
+        <RowDefinition></RowDefinition>
+        <RowDefinition></RowDefinition>
       </Grid.RowDefinitions>
       <TextBlock Grid.Column="0" Grid.Row="0" FontSize="20">Height:</TextBlock>
       <TextBox Grid.Column="1" Grid.Row="0" Name="heightTB" Height="25" FontSize="9" Text="1080"></TextBox>
       <TextBlock Grid.Column="0" Grid.Row="1" FontSize="20">Width:</TextBlock>
       <TextBox Grid.Column="1" Grid.Row="1" Name="widthTB" Height="25" FontSize="9" Text="1920"></TextBox>
-      <TextBlock Grid.Column="0" Grid.Row="2" FontSize="20">Images count:</TextBlock>
-      <TextBox Grid.Column="1" Grid.Row="2" Name="imagesCountTB" Height="25" FontSize="9" Text="3"></TextBox>
-      <TextBlock Grid.Column="0" Grid.Row="3" FontSize="20">Cycles count:</TextBlock>
-      <TextBox Grid.Column="1" Grid.Row="3" Name="cyclesCountTB" Height="25" FontSize="9" Text="3"></TextBox>
-      <TextBlock Grid.Column="0" Grid.Row="4" FontSize="20">Round trip:</TextBlock>
-      <CheckBox Grid.Column="1" Grid.Row="4" Height="25" Name="rndTripCb"></CheckBox>
-      <Button Grid.Column="1" Grid.Row="4" Name="startBtn" Width="50">Start</Button>
+      <TextBlock Grid.Column="0" Grid.Row="2" FontSize="20">Result height:</TextBlock>
+      <TextBox Grid.Column="1" Grid.Row="2" Name="resHeightTB" Height="25" FontSize="9" Text="1080"></TextBox>
+      <TextBlock Grid.Column="0" Grid.Row="3" FontSize="20">Result width:</TextBlock>
+      <TextBox Grid.Column="1" Grid.Row="3" Name="resWidthTB" Height="25" FontSize="9" Text="1920"></TextBox>
+      <TextBlock Grid.Column="0" Grid.Row="4" FontSize="20">Images count:</TextBlock>
+      <TextBox Grid.Column="1" Grid.Row="4" Name="imagesCountTB" Height="25" FontSize="9" Text="3"></TextBox>
+      <TextBlock Grid.Column="0" Grid.Row="5" FontSize="20">Cycles count:</TextBlock>
+      <TextBox Grid.Column="1" Grid.Row="5" Name="cyclesCountTB" Height="25" FontSize="9" Text="3"></TextBox>
+      <TextBlock Grid.Column="0" Grid.Row="6" FontSize="20">Round trip:</TextBlock>
+      <CheckBox Grid.Column="1" Grid.Row="6" Height="25" Name="rndTripCb"></CheckBox>
+      <Button Grid.Column="1" Grid.Row="7" Name="startBtn" Width="50">Start</Button>
     </Grid>
     <ScrollViewer Name="outputScroll" Margin="10" Height="150" VerticalScrollBarVisibility="Auto" Background="#1459A3">
       <TextBlock TextWrapping="Wrap" Foreground="white" Name="output"></TextBlock>  

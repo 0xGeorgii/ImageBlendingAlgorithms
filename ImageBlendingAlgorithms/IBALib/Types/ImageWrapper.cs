@@ -31,8 +31,8 @@ namespace IBALib.Types
                 .GetProperty("Height", BindingFlags.Public | BindingFlags.Instance);
             _getHeight = () => (int)_heigthPF.GetValue(_source);
             _indexedPF = _source.GetType().GetProperty("Item");
-            _getT = (x, y) => (T) _indexedPF.GetValue(_source, new object[] { x, y });
-            _setT = (x, y, val) => _indexedPF.SetValue(source, new object[] { x, y, val});
+            _getT = (x, y) => (T)_indexedPF.GetValue(_source, new object[] { x, y });
+            _setT = (x, y, val) => _indexedPF.SetValue(source, new object[] { x, y, val });
         }
 
         public T this[int x, int y]
