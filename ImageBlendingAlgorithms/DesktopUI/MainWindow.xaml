@@ -1,4 +1,4 @@
-﻿<Window xmlns="https://github.com/avaloniaui" Width="600" Height="510">
+﻿<Window xmlns="https://github.com/avaloniaui" Width="600" Height="520">
   <StackPanel>
     <TextBlock FontSize="30" Margin="10" TextAlignment="Center">Welcome to image blender</TextBlock>
     <Grid Margin="20" Name="grid">
@@ -34,8 +34,9 @@
       <CheckBox Grid.Column="1" Grid.Row="6" Height="25" Name="rndTripCb"></CheckBox>
       <Button Grid.Column="1" Grid.Row="7" Name="startBtn" Width="50">Start</Button>
     </Grid>
-    <ScrollViewer Name="outputScroll" Margin="10" Height="150" VerticalScrollBarVisibility="Auto" Background="#1459A3">
+    <ScrollViewer Name="outputScroll" Margin="10, 0, 10, 10" Height="150" VerticalScrollBarVisibility="Auto" Background="#1459A3">
       <TextBlock TextWrapping="Wrap" Foreground="white" Name="output"></TextBlock>  
-    </ScrollViewer>    
+    </ScrollViewer>
+   <ProgressBar Name="progressBar" Margin="10, 0, 10, 0"></ProgressBar>
   </StackPanel>
 </Window>
