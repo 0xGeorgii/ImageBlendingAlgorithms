@@ -35,6 +35,36 @@ namespace DesktopUI
                 SwitchUIEnable();
             }
         }
+
+        private int __currentTasksCount = 0;
+        private int __currentTasksDone = 0;
+
+        private int _currentTasksCount
+        {
+            get
+            {
+                return __currentTasksCount;
+            }
+            set
+            {
+                Interlocked.Add(ref __currentTasksCount, value);
+                UpdateProgress();
+            }
+        }
+
+        private int _CurrentTasksDone
+        {
+            get
+            {
+                return __currentTasksDone;
+            }
+            set
+            {
+                Interlocked.Add(ref __currentTasksDone, value);
+                UpdateProgress();
+            }
+        }
+
         private Grid _grid;
         private Button _button;
         private TextBox _heightTB;
@@ -44,6 +74,8 @@ namespace DesktopUI
         private TextBox _imagesCountTB;
         private TextBox _cyclesCountTB;
         private CheckBox _roundTripCb;
+        private ProgressBar _progressBar;
+        private ScrollViewer _scrollViewer;
         private List<CheckBox> _algorithmsCheckboxes;
         private CancellationTokenSource _cancellationTokenSource;
         private CancellationToken _cancellationToken;
@@ -64,6 +96,8 @@ namespace DesktopUI
             _resHeightTB = this.FindControl<TextBox>("resHeightTB");
             _imagesCountTB = this.FindControl<TextBox>("imagesCountTB");
             _cyclesCountTB = this.FindControl<TextBox>("cyclesCountTB");
+            _progressBar = this.FindControl<ProgressBar>("progressBar");
+            _scrollViewer = this.FindControl<ScrollViewer>("outputScroll");
             _roundTripCb = this.FindControl<CheckBox>("rndTripCb");
             _roundTripCb.Click += (sender, args) =>
             {
@@ -72,7 +106,10 @@ namespace DesktopUI
             var outputTB = this.FindControl<TextBlock>("output");
             Log.RegisterCallback((message) =>
             {
-                Dispatcher.UIThread.InvokeAsync(() => outputTB.Text += message + "\r\n");
+                Dispatcher.UIThread.InvokeAsync(() => {
+                    outputTB.Text += message + "\r\n";
+                    _scrollViewer.Offset = new Vector(_scrollViewer.Offset.X, _scrollViewer.Offset.Y + 100);
+                });
             });
             Log.Debug("=== Desktop UI has been initialized ===");
         }
@@ -111,10 +148,12 @@ namespace DesktopUI
 
         private async void StartButtonHandle()
         {
+            _progressBar.Value = 0;
             var heigth = _heightTB.Text;
             var width = _widthTB.Text;
             var imagesCount = int.Parse(_imagesCountTB.Text ?? "0");
             var cyclesCount = int.Parse(_cyclesCountTB.Text ?? "0");
+            _currentTasksCount += cyclesCount;
             _isStarted = !_isStarted;
             _button.Content = _isStarted ? "Stop" : "Start";
             if (_isStarted)
@@ -147,6 +186,11 @@ namespace DesktopUI
                 _cyclesCountTB.IsEnabled =
                 !_isStarted;
             _algorithmsCheckboxes.ForEach(c => c.IsEnabled = !_isStarted);
+            if(_isStarted)
+            {
+                _currentTasksCount = 0;
+                _progressBar.Value = 0;
+            }
         }
 
         private async Task Process(string heigth, string width, int imagesCount)
@@ -157,15 +201,18 @@ namespace DesktopUI
                 var uHeigth = uint.Parse(heigth);
                 var uWidth = uint.Parse(width);
                 Log.Debug("Begin loading images");
+                _currentTasksCount += imagesCount;
                 for (int i = 0; i < imagesCount; i++)
                 {
                     tasks[i] = SrcLoader.DownloadImageAsync(uWidth, uHeigth, _cancellationToken);
                 }
                 await Task.WhenAll(tasks);
+                _CurrentTasksDone += imagesCount;
                 Log.Debug("Finish loading images");
                 var ts = TaskScheduler.FromCurrentSynchronizationContext();
                 var checkedCb = _algorithmsCheckboxes.Where(c => _roundTripCb.IsChecked.Value || c.IsChecked.Value).ToList();
                 var tasksForGenerating = new Task[checkedCb.Count];
+                _currentTasksCount += checkedCb.Count;
                 Log.Debug("Begin image generating");
                 for (int i = 0; i < checkedCb.Count; i++)
                 {
@@ -188,6 +235,7 @@ namespace DesktopUI
                         {
                             ((proc.Result as dynamic).GetSource as Image<Rgba32>).SaveAsJpeg(fs);
                         }
+                        _CurrentTasksDone++;
                     }, _cancellationToken);
                     tasksForGenerating[i].Start();
                 }
@@ -212,6 +260,16 @@ namespace DesktopUI
                     x = null;
                 });
             }
+            _CurrentTasksDone++;
+        }
+        
+        private void UpdateProgress()
+        {
+            var value = 100.0 * ((double) __currentTasksDone / __currentTasksCount);
+            Dispatcher.UIThread.Post(() =>
+            {
+                _progressBar.Value = value;
+            });
         }
     }
 }
