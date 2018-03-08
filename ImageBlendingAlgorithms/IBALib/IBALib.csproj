@@ -12,8 +12,5 @@
     <Authors>@georgeplotnikov</Authors>
     <Copyright>@georgeplotnikov © 2018</Copyright>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-  </PropertyGroup>
 
 </Project>
