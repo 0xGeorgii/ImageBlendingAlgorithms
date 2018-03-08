@@ -1,18 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <RuntimeFrameworkVersion>2.0</RuntimeFrameworkVersion>
-    <NETStandardImplicitPackageVersion>2.0</NETStandardImplicitPackageVersion>
-  </PropertyGroup>
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>IBALib</AssemblyName>
-    <PackageId>IBALib</PackageId>
     <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>    
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>IBALib</AssemblyName>
+    <PackageId>IBALib</PackageId>
+    <Authors>@georgeplotnikov</Authors>
+    <Copyright>@georgeplotnikov © 2018</Copyright>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
 
 </Project>

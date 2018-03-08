@@ -47,6 +47,7 @@ namespace Processing.ImageProcessing.Commands
             catch(Exception ex)
             {
                 if (res != null && res is IDisposable) (res as IDisposable).Dispose();
+                Log.Debug(ex);
                 return images;
             }
         }

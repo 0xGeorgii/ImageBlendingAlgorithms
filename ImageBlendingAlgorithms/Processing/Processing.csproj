@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>IBAProcessing</AssemblyName>
+    <PackageId>IBAProcessing</PackageId>
+    <Authors>@georgeplotnikov</Authors>
+    <Copyright>@georgeplotnikov © 2018</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
