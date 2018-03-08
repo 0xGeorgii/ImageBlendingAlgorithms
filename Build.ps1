@@ -2,7 +2,7 @@ if(Test-Path .\artifacts) { Remove-Item .\artifacts -Force -Recurse }
 
 cd ImageBlendingAlgorithms
 
-dotnet restore
+nuget restore -recursive
 
 MSBuild.exe ImageBlendingAlgorithms.sln /p:Configuration=Release /p:Platform="Any CPU"
 
