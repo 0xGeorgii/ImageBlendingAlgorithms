@@ -7,5 +7,5 @@ nuget restore -recursive
 MSBuild.exe ImageBlendingAlgorithms.sln /p:Configuration=Release /p:Platform="Any CPU"
 
 dotnet test .\Tests\IBALibTest.csproj -c Release
-$revision = '0.0.' + $env:APPVEYOR_BUILD_NUMBER
-dotnet pack .\IBALib -c Release -o .\artifacts --version-suffix=$revision
+$revision = $env:APPVEYOR_BUILD_NUMBER
+dotnet pack .\IBALib /p:Platform="Any CPU" -c Release -o .\artifacts /p:PackageVersion=0.0.1 --version-suffix=$revision
