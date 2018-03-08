@@ -4,7 +4,7 @@ cd ImageBlendingAlgorithms
 
 dotnet restore
 
-dotnet build -c Release
+MSBuild.exe ImageBlendingAlgorithms.sln /p:Configuration=Release /p:Platform="Any CPU"
 
 dotnet test .\Tests\IBALibTest.csproj -c Release
 $revision = '0.0.' + $env:APPVEYOR_BUILD_NUMBER
