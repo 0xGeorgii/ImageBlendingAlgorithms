@@ -12,6 +12,7 @@ function Exec
 }
 
 if(Test-Path .\artifacts) { Remove-Item .\artifacts -Force -Recurse }
+exec { & cd ImageBlendingAlgorithms }
 exec { & dotnet restore }
 exec { & dotnet test .\IBALibTest -c Release }
 $revision = '0.0.' + $env:APPVEYOR_BUILD_NUMBER
