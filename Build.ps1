@@ -8,4 +8,4 @@ MSBuild.exe ImageBlendingAlgorithms.sln /p:Configuration=Release /p:Platform="An
 
 dotnet test .\Tests\IBALibTest.csproj -c Release
 $revision = '0.0.' + $env:APPVEYOR_BUILD_NUMBER
-dotnet pack .\IBALib -c Release -o .\artifacts --version=$revision
+dotnet pack .\IBALib -c Release -o .\artifacts --version-suffix=$revision
