@@ -12,7 +12,7 @@ build:
   parallel: true
   verbosity: normal
 artifacts:  
-- path: .\artifacts\**\*.nupkg
+- path: .\ImageBlendingAlgorithms\**\artifacts\*.nupkg
   name: NuGet
 deploy:
 - provider: NuGet
