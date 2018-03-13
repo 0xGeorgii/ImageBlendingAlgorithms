@@ -18,5 +18,5 @@ Write-Host "Done executing tests"
 
 $revision = $env:APPVEYOR_BUILD_NUMBER
 Write-Host "Packaging project"
-dotnet pack .\IBALib -c Release -o .\artifacts --version-suffix=$revision
+dotnet pack .\**\ -c Release -o .\artifacts --version-suffix=$revision
 Write-Host "Done packaging projects"
