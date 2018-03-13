@@ -18,7 +18,7 @@ deploy:
 - provider: NuGet
   server: https://www.myget.org/F/image-blending-algorithms/api/v2/package
   api_key:
-    secure: 1P7u3EdfOcq6IKDXqQW0ZsX265QZ8czqKUMHtkj+D6p9ZizsXNVG6of4pFZloPtE3LtA8t508osS6yCESUj0Uxuu7nCRA00yn3r2rNbZbX0=
+    secure: AiXghD22o96fR5cg+6JIyEmO/49r+o6Khpgf32yWtKwu9m1FPDSflxNLb0dKcx0r
   symbol_server: https://www.myget.org/F/image-blending-algorithms/symbols/api/v2/package
   on:
     branch: master
