@@ -1,0 +1,21 @@
+version: 0.0.{build}
+pull_requests:
+  do_not_increment_build_number: true
+image: Visual Studio 2017
+configuration: Release
+platform: x64
+nuget:
+  disable_publish_on_pr: true
+before_build:
+- ps: .\Build.ps1
+build:
+  parallel: true
+  verbosity: normal
+deploy:
+- provider: NuGet
+  server: https://www.myget.org/F/image-blending-algorithms/api/v2/package
+  api_key:
+    secure: 1P7u3EdfOcq6IKDXqQW0ZsX265QZ8czqKUMHtkj+D6p9ZizsXNVG6of4pFZloPtE3LtA8t508osS6yCESUj0Uxuu7nCRA00yn3r2rNbZbX0=
+  symbol_server: https://www.myget.org/F/image-blending-algorithms/symbols/api/v2/package
+  on:
+    branch: master
