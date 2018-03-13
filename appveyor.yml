@@ -11,6 +11,9 @@ before_build:
 build:
   parallel: true
   verbosity: normal
+artifacts:  
+- path: .\artifacts\**\*.nupkg
+  name: NuGet
 deploy:
 - provider: NuGet
   server: https://www.myget.org/F/image-blending-algorithms/api/v2/package
