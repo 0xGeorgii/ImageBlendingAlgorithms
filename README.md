@@ -6,6 +6,8 @@ Big thanks to AppVeyor for building our open source project:
 
 Build Status:  [![Build status](https://ci.appveyor.com/api/projects/status/3wrl63fly957bc80?svg=true)](https://ci.appveyor.com/project/GeorgePlotnikov/imageblendingalgorithms)
 
+Dev build: [![MyGet CI](https://img.shields.io/myget/image-blending-algorithms/v/IBALib.svg)](http://myget.org/gallery/image-blending-algorithms)
+
 ## Authors
 
 * **George Plotnikov** - *Initial work* - [blog](https://georgeplotnikov.github.io) was disapointed hasn't got any drawing skills and thus he decided to create the programm for generating arts automatically.
