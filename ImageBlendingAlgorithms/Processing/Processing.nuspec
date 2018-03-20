@@ -14,5 +14,8 @@
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>@georgeplotnikov Copyright 2018</copyright>
     <tags>netcoreapp2.0</tags>
+    <dependencies>
+        <dependency id="IBALib" version="1.0" />
+    </dependencies>
   </metadata>
 </package>

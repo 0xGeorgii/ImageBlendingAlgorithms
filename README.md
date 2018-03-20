@@ -2,13 +2,21 @@
 
 Multiplatform [Netcore](https://github.com/dotnet/coreclr) based library of algorithms for generating and blending images and photos for inspiring artists produces mind-blowing arts. See an examples [here](https://www.instagram.com/daizychainer/) Also see some examples below. Author is streaming on [Twitch](https://www.twitch.tv/georgeplotnikov) the development process of this app. Feel free to join and ask questions.
 
+## Wiki
+
+Is [here](https://github.com/GeorgePlotnikov/ImageBlendingAlgorithms/wiki)
+
+## Build
+
 Big thanks to AppVeyor for building our open source project:
 
 Build Status:  [![Build status](https://ci.appveyor.com/api/projects/status/3wrl63fly957bc80?svg=true)](https://ci.appveyor.com/project/GeorgePlotnikov/imageblendingalgorithms)
 
+Dev build: [![MyGet CI](https://img.shields.io/myget/image-blending-algorithms/v/IBALib.svg)](http://myget.org/gallery/image-blending-algorithms)
+
 ## Authors
 
-* **George Plotnikov** - *Initial work* - [blog](https://georgeplotnikov.github.io) was disapointed hasn't got any drawing skills and thus he decided to create the programm for generating arts automatically.
+* **[George Plotnikov](https://georgeplotnikov.github.io)** - *Initial work* - was disapointed hasn't got any drawing skills and thus he decided to create the programm for generating arts automatically.
 
 ## License
 
