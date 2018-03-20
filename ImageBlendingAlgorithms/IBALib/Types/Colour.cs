@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace IBALib.Types
 {
     [Serializable]
-    public struct Color
+    public struct Colour
     {
         [NonSerialized]
         public float R;
@@ -39,9 +39,9 @@ namespace IBALib.Types
             _rawData |= FloatToByte(A);
         }
 
-        public Color(float r, float g, float b) : this(r, g, b, 1.0f) { }
+        public Colour(float r, float g, float b) : this(r, g, b, 1.0f) { }
 
-        public Color(float r, float g, float b, float a)
+        public Colour(float r, float g, float b, float a)
         {
             R = r;
             G = g;
@@ -50,9 +50,9 @@ namespace IBALib.Types
             _rawData = 0;
         }
 
-        public Color(byte r, byte g, byte b) : this(r, g, b, 255) { }
+        public Colour(byte r, byte g, byte b) : this(r, g, b, 255) { }
 
-        public Color(byte r, byte g, byte b, byte a)
+        public Colour(byte r, byte g, byte b, byte a)
         {
             R = ByteToFloat(r);
             G = ByteToFloat(g);
@@ -61,7 +61,7 @@ namespace IBALib.Types
             _rawData = 0;
         }
         
-        public void FillFrom(Color c)
+        public void FillFrom(Colour c)
         {
             R = c.R;
             G = c.G;
@@ -69,9 +69,9 @@ namespace IBALib.Types
             A = c.A;
         }
 
-        public static Color FromObject(object obj)
+        public static Colour FromObject(object obj)
         {
-            return new Color
+            return new Colour
             {
                 R = ByteToFloat((byte)obj.GetType().GetField("R").GetValue(obj)),
                 G = ByteToFloat((byte)obj.GetType().GetField("G").GetValue(obj)),

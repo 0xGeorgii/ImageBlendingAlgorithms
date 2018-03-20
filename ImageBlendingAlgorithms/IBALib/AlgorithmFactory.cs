@@ -20,7 +20,7 @@ namespace IBALib
             MostBrightWT,
             MostDark,
             MostDarkWT,
-            MostColorful,
+            MostColourful,
             MostContrastBW,
             NearestNeighbor,
             NearestNeighborDownscale
@@ -35,7 +35,7 @@ namespace IBALib
             { ALGORITHM.MostBrightWT, new MostBrightWithTreshold() },
             { ALGORITHM.MostDark, new MostDark() },
             { ALGORITHM.MostDarkWT, new MostDarkWithTreshold() },
-            { ALGORITHM.MostColorful, new MostColorful() },
+            { ALGORITHM.MostColourful, new MostColourful() },
             { ALGORITHM.MostContrastBW, new MostContrastBW() }
         };
 
@@ -54,7 +54,7 @@ namespace IBALib
             new MostBrightWithTreshold(),
             new MostDark(),
             new MostDarkWithTreshold(),
-            new MostColorful(),
+            new MostColourful(),
             new MostContrastBW()
         };
 

@@ -10,11 +10,11 @@ namespace IBALib.BlendingAlgorithms
     {
         private float _threshold = 0.5f;
         
-        public override Color Calculate(IEnumerable<Color> colors)
+        public override Colour Calculate(IEnumerable<Colour> colours)
         {
-            var a = colors.ElementAt(0);
-            var b = colors.ElementAt(1);
-            Color c = (a.R + a.G + a.B) / 3f >= (b.R + b.G + b.B) / 3f ? a : b;
+            var a = colours.ElementAt(0);
+            var b = colours.ElementAt(1);
+            Colour c = (a.R + a.G + a.B) / 3f >= (b.R + b.G + b.B) / 3f ? a : b;
 
             var r = 0.5f + (c.R - 0.5f) * 2f;
             if (r < 0) r = 0;
@@ -43,7 +43,7 @@ namespace IBALib.BlendingAlgorithms
                 if (_b < 0) _b = 0;
             }
 
-            return new Color(r, g, _b, 1f);
+            return new Colour(r, g, _b, 1f);
         }
 
         public override string GetVerboseName() => "Most Bright with Treshold";

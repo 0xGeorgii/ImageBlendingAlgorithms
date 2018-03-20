@@ -6,6 +6,6 @@ namespace IBALib.Interfaces
 {
     public interface IBlendAlgorithm : IAlgorithm
     {
-        Color Calculate(IEnumerable<Color> colors);
+        Colour Calculate(IEnumerable<Colour> colours);
     }
 }

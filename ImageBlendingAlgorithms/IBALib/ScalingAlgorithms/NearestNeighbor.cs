@@ -12,10 +12,10 @@ namespace IBALib.ScalingAlgorithms
 
         public virtual string GetVerboseName() => "Nearest Neighbor";
 
-        public Color[,] Scale<T>(IMatrix<T> src, int x, int y)
+        public Colour[,] Scale<T>(IMatrix<T> src, int x, int y)
         {
             if (src.Width == x && src.Height == y) return null;
-            var res = new Color[x,y];
+            var res = new Colour[x,y];
             var xRatio = CalcXRatio(src.Width, x);
             var yRatio = CalcYRatio(src.Height, y);
             double px, py;
@@ -25,7 +25,7 @@ namespace IBALib.ScalingAlgorithms
                 {
                     px = Math.Floor(i * xRatio);
                     py = Math.Floor(j * yRatio);
-                    res[i, j].FillFrom(Color.FromObject(src[(int)px, (int)py]));
+                    res[i, j].FillFrom(Colour.FromObject(src[(int)px, (int)py]));
                     res[i, j].UpdateRawData();
                 }
             }

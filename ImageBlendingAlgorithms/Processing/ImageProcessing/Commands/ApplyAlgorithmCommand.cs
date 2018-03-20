@@ -37,7 +37,7 @@ namespace Processing.ImageProcessing.Commands
                         var pixels = images.Select(img =>
                         {
                             dynamic pixel = img[i, j];
-                            return new Color(pixel.R, pixel.G, pixel.B, pixel.A);
+                            return new Colour(pixel.R, pixel.G, pixel.B, pixel.A);
                         });
                         res[i, j] = (T)Activator.CreateInstance(typeof(T), new object[] { _algorithm.Calculate(pixels).Vector4 });
                     }

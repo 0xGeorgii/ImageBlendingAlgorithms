@@ -21,14 +21,14 @@ namespace IBALib.BlendingAlgorithms
             _imagesCount = imagesCount;
         }
 
-        public override Color Calculate(IEnumerable<Color> colors)
+        public override Colour Calculate(IEnumerable<Colour> colours)
         {
             var divider = 1.0f / _imagesCount;
             float 
-                sumR = colors.Sum(c=>c.R),
-                sumG = colors.Sum(c=>c.G),
-                sumB = colors.Sum(c=>c.B);
-            return new Color(sumR * divider, sumG * divider, sumB * divider, _alpha);
+                sumR = colours.Sum(c=>c.R),
+                sumG = colours.Sum(c=>c.G),
+                sumB = colours.Sum(c=>c.B);
+            return new Colour(sumR * divider, sumG * divider, sumB * divider, _alpha);
         }
 
         public override string GetVerboseName() => "Glass Blend";

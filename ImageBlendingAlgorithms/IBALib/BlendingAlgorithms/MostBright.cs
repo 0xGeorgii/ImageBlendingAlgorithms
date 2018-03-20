@@ -8,10 +8,10 @@ namespace IBALib.BlendingAlgorithms
     [ImageBlendingAlgorithm]
     internal class MostBright : AIBAlgorithm
     {
-        public override Color Calculate(IEnumerable<Color> colors )
+        public override Colour Calculate(IEnumerable<Colour> colours )
         {
-            var a = colors.ElementAt(0);
-            var b = colors.ElementAt(1);
+            var a = colours.ElementAt(0);
+            var b = colours.ElementAt(1);
             return (a.R + a.G + a.B) / 3f >= (b.R + b.G + b.B) / 3 ? a : b;
         }
 

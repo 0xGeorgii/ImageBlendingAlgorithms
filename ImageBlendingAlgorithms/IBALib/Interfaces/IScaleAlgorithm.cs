@@ -7,6 +7,6 @@ namespace IBALib.Interfaces
 {
     public interface IScaleAlgorithm : IAlgorithm
     {
-        Color[,] Scale<T>(IMatrix<T> src, int x, int y);
+        Colour[,] Scale<T>(IMatrix<T> src, int x, int y);
     }
 }

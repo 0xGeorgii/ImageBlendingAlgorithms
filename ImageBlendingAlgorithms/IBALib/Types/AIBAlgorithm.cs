@@ -8,7 +8,7 @@ namespace IBALib.Types
 {
     internal abstract class AIBAlgorithm : IBlendAlgorithm
     {
-        public abstract Color Calculate(IEnumerable<Color> colors);
+        public abstract Colour Calculate(IEnumerable<Colour> colours);
 
         public virtual string GetName() => GetType().Name;
 
