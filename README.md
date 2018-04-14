@@ -24,8 +24,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Examples
 
-<img src="https://scontent-arn2-1.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/15538735_351929418498078_5112348642430156800_n.jpg" />
+<img src="https://scontent-frt3-1.cdninstagram.com/vp/5c83849f6ccd03fe07bb795ab9cba6e9/5B74943D/t51.2885-15/s640x640/sh0.08/e35/15538735_351929418498078_5112348642430156800_n.jpg" />
 <br/>
-<img src="https://scontent-arn2-1.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/15538842_351862161857521_8225205380813160448_n.jpg" />
+<img src="https://scontent-frt3-1.cdninstagram.com/vp/df78a65bfd7d54ab4ac303037a9ec5a1/5B5F9693/t51.2885-15/s640x640/sh0.08/e35/15538842_351862161857521_8225205380813160448_n.jpg" />
 <br/>
-<img src="https://scontent-arn2-1.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/16789812_268931656875956_7625094378209411072_n.jpg" />
+<img src="https://scontent-frt3-1.cdninstagram.com/vp/3aea98b590b0ab0a069b4456c93fe004/5B6BA357/t51.2885-15/s640x640/sh0.08/e35/14564995_633835526796206_4644745116144107520_n.jpg" />
