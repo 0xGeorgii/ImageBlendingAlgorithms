@@ -14,4 +14,5 @@ jobs:
       with:
         dotnet-version: 2.2.108
     - name: Build with dotnet
+      run: cd ImageBlendingAlgorithms
       run: dotnet build --configuration Release
