@@ -3,6 +3,7 @@
    // Use hover for the description of the existing attributes
    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
    "version": "0.2.0",
+   "requireExactSource": false,
    "configurations": [
         {
             "name": ".NET Core Launch (web)",
@@ -10,7 +11,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/WebUI/bin/Debug/netcoreapp2.1/WebUI.dll",
+            "program": "${workspaceFolder}/WebUI/bin/Debug/netcoreapp2.2/WebUI.dll",
             "args": [],
             "cwd": "${workspaceFolder}/WebUI",
             "stopAtEntry": false,
