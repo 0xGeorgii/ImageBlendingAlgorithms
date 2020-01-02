@@ -1,4 +1,5 @@
 ﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using SourceProvider.Configuration;
 using System;
 using System.Collections.Generic;

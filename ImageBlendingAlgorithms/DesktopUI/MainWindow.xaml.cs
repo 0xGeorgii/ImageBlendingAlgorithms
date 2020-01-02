@@ -9,6 +9,7 @@ using Processing;
 using Processing.ImageProcessing;
 using Processing.ImageProcessing.Commands;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using SourceProvider.Network;
 using System;
 using System.Collections.Concurrent;
