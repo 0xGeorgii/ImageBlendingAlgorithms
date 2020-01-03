@@ -1,6 +1,0 @@
-﻿{
-  "ImageProvidersUrls": [
-    "https://picsum.photos/{x}/{y}/?random",
-    "http://lorempixel.com/{x}/{y}"
-  ]
-}
