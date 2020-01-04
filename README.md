@@ -14,6 +14,8 @@ Build Status:  [![Build status](https://ci.appveyor.com/api/projects/status/3wrl
 
 Dev build: [![MyGet CI](https://img.shields.io/myget/image-blending-algorithms/v/IBALib.svg)](http://myget.org/gallery/image-blending-algorithms)
 
+Release build: [![NuGet Badge](https://buildstats.info/nuget/ibalib)](https://www.nuget.org/packages/IBALib/)
+
 ## Authors
 
 * **[George Plotnikov](https://georgeplotnikov.github.io)** - *Initial work* - was disapointed hasn't got any drawing skills and thus he decided to create the programm for generating arts automatically.
