@@ -26,8 +26,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Examples
 
-<img src="https://scontent-arn2-1.cdninstagram.com/vp/a2cc76805fa5c1e996518cadce2854ac/5D347636/t51.2885-15/e35/14564995_633835526796206_4644745116144107520_n.jpg?_nc_ht=scontent-arn2-1.cdninstagram.com" />
+<img src="https://instagram.fhel5-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/26155883_1940458572650717_4844214882112897024_n.jpg?_nc_ht=instagram.fhel5-1.fna.fbcdn.net&_nc_cat=105&_nc_ohc=5gJgKbEpteEAX9D8iYr&oh=697017ef604e9f14de2b659f3048ae4d&oe=5EA7AAC2" />
 <br/>
-<img src="https://scontent-arn2-1.cdninstagram.com/vp/d33c188afbf5c87cb52ad0c821c69af7/5D41C1F2/t51.2885-15/e35/15538842_351862161857521_8225205380813160448_n.jpg?_nc_ht=scontent-arn2-1.cdninstagram.com" />
+<img src="https://instagram.fhel5-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/15538657_1658429601123635_4413628326036373504_n.jpg?_nc_ht=instagram.fhel5-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=zCIMvUV3HXIAX_OLlmd&oh=cbf36d84e045148a96aa809ae8de1e56&oe=5EB1A1CD" />
 <br/>
-<img src="https://scontent-arn2-1.cdninstagram.com/vp/99486da80e5c560e9d2799c4b9b4dd8f/5D46E4E8/t51.2885-15/e35/16123896_377962922566190_8282695991971282944_n.jpg?_nc_ht=scontent-arn2-1.cdninstagram.com" />
+<img src="https://instagram.fhel5-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/s640x640/15539101_1899754816925809_5790066311048462336_n.jpg?_nc_ht=instagram.fhel5-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=Ji8Qy4ZHRr4AX-dBDYj&oh=ec1850e921c2f795cba0742e5ec8f71a&oe=5E984220" />
