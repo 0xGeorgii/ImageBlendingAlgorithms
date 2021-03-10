@@ -1,7 +1,5 @@
 ![image](https://user-images.githubusercontent.com/22812032/110660996-2e50da80-81d5-11eb-964b-087390ea0f21.png)
 
-# ImageBlendingAlgorithms
-
 Multiplatform [Netcore](https://github.com/dotnet/coreclr) based library of algorithms for generating and blending images and photos for inspiring artists produces mind-blowing arts. See an examples [here](https://www.instagram.com/daizychainer/) Also see some examples below.
 
 ## Wiki
